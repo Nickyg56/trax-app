@@ -16,6 +16,7 @@ const UserService = {
       )
   },
   postLogin({email, password}){
+    console.log('post login ran')
     return fetch(`${config.API_ENDPOINT}/auth/login`, {
       method: 'POST',
       headers: {

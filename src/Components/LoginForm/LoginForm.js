@@ -1,11 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import UserService from '../../Services/UserServices';
+import UserContext from '../../Contexts/UserContext';
 
 
 class LoginForm extends React.Component {
   static defaultProps ={
     onLoginSuccess: () => {},
   }
+
+  static contextType = UserContext;
 
   state = {
     error: null,
@@ -21,7 +25,21 @@ class LoginForm extends React.Component {
     ev.preventDefault();
     const { email, password } = ev.target;
 
-    console.log(email.value, password.value)
+    UserService.postLogin({
+      email: email.value,
+      password: password.value,
+    })
+    .then(res => {
+      console.log(this.context)
+      email.value = ''
+      password.value = ''
+      this.context.processLogin(res)
+      this.props.onLoginSuccess()
+    })
+    .catch(res => {
+      this.setState({ error: res.error })
+    })
+
   }
 
 

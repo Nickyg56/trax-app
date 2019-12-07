@@ -4,6 +4,7 @@ import LandingPage from '../LandingPage/LandingPage';
 import RegistrationRoute from '../../Routes/RegistrationRoute/RegistrationRoute';
 import './App.css';
 import LoginRoute from '../../Routes/LoginRoute/LoginRoute';
+import DashboardRoute from '../../Routes/DashboardRoute/DashboardRoute';
 
 class App extends React.Component {
   render() {
@@ -26,6 +27,11 @@ class App extends React.Component {
             <Route
               path='/register'
               component={RegistrationRoute}
+            />
+
+            <Route
+              path='/dashboard'
+              component={DashboardRoute}
             />
 
           </Switch>
