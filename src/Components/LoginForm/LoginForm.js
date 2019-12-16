@@ -2,11 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import UserService from '../../Services/UserServices';
 import UserContext from '../../Contexts/UserContext';
+import './LoginForm.css';
 
 
 class LoginForm extends React.Component {
-  static defaultProps ={
-    onLoginSuccess: () => {},
+  static defaultProps = {
+    onLoginSuccess: () => { },
   }
 
   static contextType = UserContext;
@@ -29,59 +30,63 @@ class LoginForm extends React.Component {
       email: email.value,
       password: password.value,
     })
-    .then(res => {
-      console.log(this.context)
-      email.value = ''
-      password.value = ''
-      this.context.processLogin(res)
-      this.props.onLoginSuccess()
-    })
-    .catch(res => {
-      this.setState({ error: res.error })
-    })
+      .then(res => {
+        console.log(this.context)
+        email.value = ''
+        password.value = ''
+        this.context.processLogin(res)
+        this.props.onLoginSuccess()
+      })
+      .catch(res => {
+        this.setState({ error: res.error })
+      })
 
   }
 
 
-  render(){
-    const { error } = this.state; 
+  render() {
+    const { error } = this.state;
     return (
       <form
-            className='form'
-            onSubmit={this.handleSubmit}
-          >
-            <div role='alert' className='alert'>
-              {error && <p>{error}</p>}
-            </div>
-            <h2>Login</h2>
-              <label htmlFor='login-email-input'>
-                Email:
+        className='login-form'
+        onSubmit={this.handleSubmit}
+      >
+        <div role='alert' className='alert'>
+          {error && <p>{error}</p>}
+        </div>
+        <div className='login-form-row'>
+          <label htmlFor='login-email-input'>
+            Email:
               </label>
-              <input
-                ref={this.firstInput}
-                id='login-email-input'
-                name='email'
-                type='email'
-                required
-              />
-              <label htmlFor='login-password-input'>
-                Password:
+          <input
+            ref={this.firstInput}
+            id='login-email-input'
+            name='email'
+            type='email'
+            required
+          />
+        </div>
+        <div className='login-form-row'>
+          <label htmlFor='login-password-input'>
+            Password:
               </label>
-              <input
-                id='login-password-input'
-                name='password'
-                type='password'
-                required
-              />
-            <button type='submit'
-              className='button purple-button'
-            >
-              Login
+          <input
+            id='login-password-input'
+            name='password'
+            type='password'
+            required
+          />
+        </div>
+
+        <button type='submit'
+          className='login-button'
+        >
+          Login
             </button>
-            <div className='login-link'>
-              <Link to='/register' >Don't have an account? Sign up!</Link>
-            </div>
-          </form>
+        <div className='signup-link-container'>
+          <span>Don't have an account? <Link to='/register' className='sign-up-link' >Sign up!</Link></span>
+        </div>
+      </form>
     )
   }
 }

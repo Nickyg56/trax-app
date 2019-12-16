@@ -1,4 +1,5 @@
 import config from '../config';
+import TokenService from './TokenService';
 
 const UserService = {
   postUser(user){
@@ -28,6 +29,18 @@ const UserService = {
       ? res.json().then(e => Promise.reject(e))
       : res.json()
       )
+  },
+  getUserProjects(){
+    return fetch(`${config.API_ENDPOINT}/projects`, {
+      headers: {
+        'authorization': `Bearer ${TokenService.getAuthToken()}`,
+      },
+    })
+    .then(res => 
+      (!res.ok)
+      ? res.json().then(e => Promise.reject(e))
+      : res.json()
+    )
   },
 
 }

@@ -1,0 +1,44 @@
+.login-form {
+  width: 50%;
+}
+
+.login-form-row {
+  padding: 5px 0;
+  display: flex;
+}
+
+.login-form-row label {
+  padding-right: 10px;
+}
+
+.login-form-row input {
+  flex: 1;
+}
+
+
+.login-button {
+  color: white;
+  background-color: rgb(0, 177, 133);
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 10px 0;
+  width: 60px;
+  padding: 8px;
+  border: none;
+}
+
+.login-button:hover {
+  cursor: pointer;
+}
+
+.signup-link-container {
+  margin-top: 40px;
+}
+.sign-up-link {
+  color: rgba(175,242,255,1);
+  text-decoration: none;
+}
+
+.sign-up-link:hover {
+  text-decoration: underline;
+}

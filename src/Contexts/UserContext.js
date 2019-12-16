@@ -4,10 +4,14 @@ import TokenService from '../Services/TokenService';
 
 const UserContext = React.createContext({
   user: {},
+  userProjects: [],
   error: null,
+  projectIndex: null,
   setError: () => {},
   clearError: () => {},
   setUser: () => {},
+  setUserProjects: () => {},
+  setProjectIndex: () => {},
   processLogin: () => {},
   processLogout: () => {},
 })
@@ -19,12 +23,14 @@ export class UserProvider extends React.Component {
     super(props)
     const state = {
       user: {},
+      userProjects: [],
       error: null,
+      projectIndex: null,
     }
 
     const jwtPayload = TokenService.parseAuthToken()
 
-    if(jwtPayload)
+    if(TokenService.hasAuthToken())
       state.user = {
         id: jwtPayload.user_id,
         full_name: jwtPayload.full_name,
@@ -42,8 +48,18 @@ export class UserProvider extends React.Component {
   }
 
   setUser = user => {
-    console.log('Set user ran')
+    console.log('CONTEXT Set user ran')
     this.setState({ user })
+  }
+
+  setUserProjects = projects => {
+    console.log('CONTEXT Set projects ran')
+    this.setState({ userProjects: projects })
+  }
+
+  setProjectIndex = i => {
+    console.log(`project index set to ${i}`)
+    this.setState({projectIndex: i})
   }
 
   processLogin = response => {
@@ -63,8 +79,12 @@ export class UserProvider extends React.Component {
   render(){
     const value = {
       user: this.state.user,
+      userProjects: this.state.userProjects,
       error: this.state.error,
+      projectIndex: this.state.projectIndex,
       setUser: this.setUser,
+      setUserProjects: this.setUserProjects,
+      setProjectIndex: this.setProjectIndex,
       setError: this.setError,
       clearError: this.clearError,
       processLogin: this.processLogin,

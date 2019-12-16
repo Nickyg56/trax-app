@@ -1,15 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './LandingPage.css';
 
 
 function LandingPage() {
   return (
-    <section className='landing-container'>
-      <h2>Landing Page</h2>
-      <Link to='/login'>Login</Link>
-      <Link to='registration'>Sign up</Link>
-    </section>
-
+    <div className='landing-page-container'>
+      <section className='landing-page-section'>
+        <h2 className='landing-page-header'>Welcome to the trax app!</h2>
+          <Link className='landing-page-link' to='/login'>Login</Link>
+          <Link className='landing-page-link' to='/register'>Sign up</Link>
+      </section>
+    </div>
   );
 }
 

@@ -1,23 +1,44 @@
-.App {
-  text-align: center;
+
+:root {
+  --purple: rgb(164, 99, 194);
+  --sky-blue: rgba(175,242,255,1);
+  --light-blue: rgba(205,247,255,1);
+  --charcoal: #424753;
+  --seafoam: rgb(0, 177, 133);
+  --burnt-orange: rgb(243, 85, 23);
+  --seafoam-active: rgb(3, 161, 122);
 }
 
-.App-logo {
-  height: 40vmin;
+
+.App {
+  text-align: center;
+  box-sizing: border-box;
+}
+
+html {
+  background: linear-gradient(90deg, var(--purple) 0%, var(--sky-blue) 50%, var(--light-blue) 100%);
 }
 
 .App-header {
-  background-color: #2e333d;
-  
+  background-color: var(--charcoal)
+  /* background-image: repeating-linear-gradient(var(--sky-blue), var(--light-blue) 50%); */
 }
 
+
+/* move to header css */
 .title {
   font-style: oblique;
   margin: 0;
   padding: 2vh;
-  color: white;
 }
 
-.App-link {
-  color: #09d3ac;
+.title-link {
+  text-decoration: none;
+  color: white;
+
 }
+
+.title-link:hover {
+  color: rgba(175,242,255,1);
+}
+

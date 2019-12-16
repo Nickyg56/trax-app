@@ -1,18 +1,22 @@
 import React from 'react';
 import LoginForm from '../../Components/LoginForm/LoginForm';
+import './LoginRoute.css';
+
 
 class LoginRoute extends React.Component {
+
 
   static defaultProps = {
     location: {},
     history: {
-      push: () => {}
+      push: () => { }
     },
   }
-  
+
 
   onLoginSuccess = () => {
     console.log('On login success ran')
+
     const { location, history } = this.props;
     const destination = (location.state || {}).from || '/dashboard'
     history.push(destination)
@@ -20,9 +24,11 @@ class LoginRoute extends React.Component {
 
   render() {
     return (
-      <section className='login-container'>
-        <LoginForm onLoginSuccess={this.onLoginSuccess}/>
-      </section>
+      <div className='login-container'>
+        <section className='login-section'>
+          <LoginForm onLoginSuccess={this.onLoginSuccess} />
+        </section>
+      </div>
     )
   }
 }

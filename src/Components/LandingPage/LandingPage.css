@@ -1,0 +1,29 @@
+.landing-page-container {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(90deg, rgba(205,247,255,1) 0%, rgba(175,242,255,1) 50%, rgba(205,247,255,1) 100%);
+}
+.landing-page-section {
+  margin-top: 10%;
+  background-color: #2e333d;
+  height: 20vh;
+  border-radius: 10px;
+  width: 40%;
+}
+
+.landing-page-header {
+  font-size: 24px;
+  color: rgb(234, 242, 255); 
+}
+
+.landing-page-link {
+  margin-bottom: 3px;
+  color: rgb(234, 242, 255);  
+  text-decoration: none;
+  padding: 5px;
+}
+
+.landing-page-link:hover {
+  color: rgba(175,242,255,1);
+}

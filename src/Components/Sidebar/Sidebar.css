@@ -1,0 +1,110 @@
+.projects-sidebar-container {
+  border: 2px solid var(--charcoal);
+  position: fixed;
+  
+  width: 300px;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+
+
+
+.projects-nav-list {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding:0;
+  flex-direction: column;
+}
+
+.project-list-item {
+  text-align: left;
+  margin-left: 5px;
+}
+
+.inactive-project:hover {
+  background-color: var(--seafoam);
+}
+
+
+.project-list-link {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+
+}
+
+
+.project-button {
+  margin-top: 5px;
+}
+
+.project-form {
+  border-top: 1px solid rgb(55, 57, 59);
+  margin-top: 5px;
+}
+
+.project-form-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.project-form-item > input {
+  width: 60%;
+  border-radius: 5px;
+  margin-top: 5px;
+  border: 1px solid rgb(55, 57, 59);
+}
+
+#project-description {
+  height: 40px;
+  width: 80%;
+  margin-top: 5px;
+  border-radius: 5px;
+}
+
+
+.chat-controller {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid var(--charcoal);
+  background-color: var(--sky-blue);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+
+
+.sidebar-header {
+  flex: .3333;
+  padding: 5px 0;
+}
+
+.sidebar-header:hover {
+  cursor: pointer;
+}
+
+.middle-header {
+  border-left: 1px solid rgb(112, 125, 161);
+  border-right: 1px solid rgb(112, 125, 161);
+
+}
+.active {
+  background-color: var(--charcoal);
+  color: white;
+}
+
+.projects-sidebar {
+  background-color: var(--charcoal);
+}
+
+.current-project {
+  /* background: linear-gradient(90deg, var(--purple) 0%, var(--sky-blue) 140%); */
+  background-color: var(--seafoam);
+}
+
