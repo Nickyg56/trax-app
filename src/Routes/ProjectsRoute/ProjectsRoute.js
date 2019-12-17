@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Sidebar from '../../Components/Sidebar/Sidebar';
 import UserContext from '../../Contexts/UserContext';
 import ProjectServices from '../../Services/ProjectServices';
@@ -82,7 +83,7 @@ class ProjectsRoute extends React.Component {
 
   render() {
     const { loaded, currentProject} = this.state;
-    console.log(this.context.projectIndex)
+    console.log(currentProject)
 
 
     if(!loaded){
@@ -95,6 +96,7 @@ class ProjectsRoute extends React.Component {
         <section className='project-section'>
           <h2 className='project-title'>{currentProject.title}</h2>
           <p className='project-description'>{currentProject.description}</p>
+          <Link to={`/calendar/project/${currentProject.id}`}>View Calendar</Link>
         </section>
       </div>
     )

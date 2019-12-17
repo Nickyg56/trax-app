@@ -80,9 +80,6 @@ class ProjectsSideBar extends React.Component {
 
 
   render() {
-    console.log(this.state.currIndex)
-
-
     const { projects, showProjectForm } = this.state;
     const projectItems = this.makeProjectOptions(projects)
 

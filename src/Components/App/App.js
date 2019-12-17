@@ -6,6 +6,7 @@ import './App.css';
 import LoginRoute from '../../Routes/LoginRoute/LoginRoute';
 import DashboardRoute from '../../Routes/DashboardRoute/DashboardRoute';
 import ProjectsRoute from '../../Routes/ProjectsRoute/ProjectsRoute';
+import Calendar from '../Calendar/Calendar';
 
 class App extends React.Component {
 
@@ -40,8 +41,19 @@ class App extends React.Component {
             />
 
             <Route
+              exact
               path='/projects/:projectId'
               component={ProjectsRoute}
+            />
+
+            <Route
+              exacts
+              path='/calendar/project/:projectId'
+              render={(props) => {
+                return (
+                  <Calendar {...props} calendarType={'project'}/>
+                )
+              }}
             />
 
           </Switch>

@@ -13,12 +13,17 @@ class Sidebar extends React.Component {
   state = {
     headerType: config.SIDEBAR_PROJECTS,
     currIndex: null,
+    sidebarVisible: true,
   }
 
   changeHeaderType = (type) => {
     this.setState({
       headerType: type,
     })
+  }
+
+  toggleSidebarVisible = () => {
+    this.setState({ sidebarVisible: !this.state.sidebarVisible})
   }
 
   setActiveIndex = i => {
@@ -37,34 +42,43 @@ class Sidebar extends React.Component {
   }
 
   render() {
-    const { headerType } = this.state;
-    console.log(this.props)
+    const { headerType, sidebarVisible } = this.state;
+    console.log(sidebarVisible)
 
     const selectedComponent = this.determineSidebarComponent(headerType)
 
-    return (
-      <div className={'projects-sidebar-container ' + headerType}>
-        <div className='chat-controller'>
-          <span
-            className={(headerType === config.SIDEBAR_PROJECTS ? 'active ' : '') + 'sidebar-header'}
-            onClick={() => this.changeHeaderType(config.SIDEBAR_PROJECTS)}>
-            Projects
-            </span>
-          <span
-            className={(headerType === config.SIDEBAR_CHAT ? 'active ' : '') + 'sidebar-header middle-header'}
-            onClick={() => this.changeHeaderType(config.SIDEBAR_CHAT)}>
-            Chat
-            </span>
-          <span
-            className={(headerType === config.SIDEBAR_EVENTS ? 'active ' : '') + 'sidebar-header'}
-            onClick={() => this.changeHeaderType(config.SIDEBAR_EVENTS)}>
-            Events
-            </span>
-
+    if(sidebarVisible){
+      return (
+        <div className={'projects-sidebar-container ' + headerType}>
+          <div className='chat-controller'>
+          <button onClick={this.toggleSidebarVisible}>^</button>
+            <span
+              className={(headerType === config.SIDEBAR_PROJECTS ? 'active ' : '') + 'sidebar-header'}
+              onClick={() => this.changeHeaderType(config.SIDEBAR_PROJECTS)}>
+              Projects
+              </span>
+            <span
+              className={(headerType === config.SIDEBAR_CHAT ? 'active ' : '') + 'sidebar-header middle-header'}
+              onClick={() => this.changeHeaderType(config.SIDEBAR_CHAT)}>
+              Chat
+              </span>
+            <span
+              className={(headerType === config.SIDEBAR_EVENTS ? 'active ' : '') + 'sidebar-header'}
+              onClick={() => this.changeHeaderType(config.SIDEBAR_EVENTS)}>
+              Events
+              </span>
+  
+          </div>
+          {selectedComponent}
         </div>
-        {selectedComponent}
+      )
+    } else return (
+      <div className='projects-sidebar-collapsed'>
+        <button onClick={this.toggleSidebarVisible}>Show Sidebar</button>
       </div>
     )
+
+    
   }
 
 }
