@@ -1,7 +1,7 @@
 import React from 'react';
-import ProjectsSidebar from '../ProjectsSidebar/ProjectsSidebar';
-import EventSidebar from '../EventSidebar/EventSidebar';
-import Chat from '../Chat/Chat';
+import ProjectsSidebar from './ProjectsSidebar/ProjectsSidebar';
+import EventSidebar from './EventSidebar/EventSidebar';
+import Chat from './Chat/Chat';
 import config from '../../config';
 import './Sidebar.css';
 import UserContext from '../../Contexts/UserContext';
@@ -54,17 +54,17 @@ class Sidebar extends React.Component {
           <button onClick={this.toggleSidebarVisible}>^</button>
             <span
               className={(headerType === config.SIDEBAR_PROJECTS ? 'active ' : '') + 'sidebar-header'}
-              onClick={() => this.changeHeaderType(config.SIDEBAR_PROJECTS)}>
+              onClick={headerType === config.SIDEBAR_PROJECTS ? () => null :  () => this.changeHeaderType(config.SIDEBAR_PROJECTS)}>              
               Projects
               </span>
             <span
               className={(headerType === config.SIDEBAR_CHAT ? 'active ' : '') + 'sidebar-header middle-header'}
-              onClick={() => this.changeHeaderType(config.SIDEBAR_CHAT)}>
+              onClick={headerType === config.SIDEBAR_CHAT ? () => null :  () => this.changeHeaderType(config.SIDEBAR_CHAT)}>
               Chat
               </span>
             <span
               className={(headerType === config.SIDEBAR_EVENTS ? 'active ' : '') + 'sidebar-header'}
-              onClick={() => this.changeHeaderType(config.SIDEBAR_EVENTS)}>
+              onClick={headerType === config.SIDEBAR_EVENTS ? () => null :  () => this.changeHeaderType(config.SIDEBAR_EVENTS)}>
               Events
               </span>
   
@@ -73,11 +73,11 @@ class Sidebar extends React.Component {
         </div>
       )
     } else return (
-      <div className='projects-sidebar-collapsed'>
-        <button onClick={this.toggleSidebarVisible}>Show Sidebar</button>
+      <div className='sidebar-collapsed-container'>
+        <button className='sidebar-collapsed-button' onClick={this.toggleSidebarVisible}>Show Sidebar</button>
       </div>
     )
-
+ 
     
   }
 

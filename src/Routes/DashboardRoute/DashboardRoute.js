@@ -22,7 +22,10 @@ class DashBoardRoute extends React.Component {
   
 
   componentDidMount(){
+
     this.context.setProjectIndex(null)
+    //probably could check if the projects are already in 
+    //context and if not load them in here instead of automatically doing so.
     UserService.getUserProjects()
     .then(res => {
       this.context.setUserProjects(res);

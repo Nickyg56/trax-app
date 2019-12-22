@@ -24,6 +24,53 @@
   font-size: 24px;
 }
 
+.day-passed {
+  background-color: grey;
+}
+.day-header {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 30px;
+}
+
+.day-option-menu {
+  border-top-right-radius: 4px;
+}
+.day-option-menu:hover {
+  background-color: var(--seafoam);
+  cursor: pointer;
+}
+
+.day-option-menu.open {
+  background-color: var(--seafoam);
+  position: absolute;
+  
+}
+
+.day-option-menu.open:hover {
+  cursor: default;
+}
+
+.day-options-container {
+  background-color: var(--seafoam);
+  list-style: none;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+
+.day.unavailable {
+  color: red;
+}
+.day-options-container li {
+  padding: 2px 5px;
+}
+
+.day-options-container li:hover {
+  background-color: var(--charcoal);
+  color: white;
+}
+
 .label-year {
   font-size: 24px;
 }
@@ -44,9 +91,7 @@
 
 
 .day {
-  width: 40px;
-  height: 40px;
-  padding: 10px 0;
+  width: 5%;
   border: 1px solid black;
   border-radius: 5px;
 }
@@ -64,7 +109,6 @@
   background-color: var(--charcoal);
   display: flex;
   flex-direction: column;
-
 }
 
 .month-link {

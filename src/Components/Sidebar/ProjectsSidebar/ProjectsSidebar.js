@@ -1,8 +1,8 @@
 import React from 'react';
-import ProjectServices from '../../Services/ProjectServices';
-import ProjectForm from '../ProjectForm/ProjectForm';
+import ProjectServices from '../../../Services/ProjectServices';
+import ProjectForm from '../../ProjectForm/ProjectForm';
 import { Link } from 'react-router-dom';
-import UserContext from '../../Contexts/UserContext';
+import UserContext from '../../../Contexts/UserContext';
 
 class ProjectsSideBar extends React.Component {
 
@@ -35,8 +35,8 @@ class ProjectsSideBar extends React.Component {
 
 
   setLocalActiveIndex = i => {
-    this.setState({currIndex: i})
-    this.props.setActiveIndex(i)
+    // this.setState({currIndex: i})
+    // this.props.setActiveIndex(i)
     this.context.setProjectIndex(i)
   }
   

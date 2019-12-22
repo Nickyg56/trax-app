@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 import DayEditor from '../../Components/DayEditor/DayEditor';
+import EventService from '../../Services/EventServices';
+import CalendarDay from './CalendarDay';
 import './Calendar.css';
 
 
@@ -18,6 +20,8 @@ class Calendar extends React.Component {
       showYearEditor: false,
       showDayEditor: false,
       dayCurrentlyEditing: null,
+      dayMenuIndex: null,
+      unavialableDays: [1, 4, 6],
     }
   }
 
@@ -68,12 +72,12 @@ class Calendar extends React.Component {
   SelectList = props => {
     let popup = props.data.map(data => {
       return (
-          <a href='#'
-            key={data}
-            className='month-link'
-            onClick={(e) => {this.onSelectChangeMonth(e, data)}}>
-            {data}
-          </a>
+        <a href='#'
+          key={data}
+          className='month-link'
+          onClick={(e) => { this.onSelectChangeMonth(e, data) }}>
+          {data}
+        </a>
       )
     })
     return (
@@ -86,7 +90,7 @@ class Calendar extends React.Component {
   MonthNav = () => {
     return (
       <span className='label-month'
-        onClick={(e) => {this.onChangeMonth(e, this.month())}}>
+        onClick={(e) => { this.onChangeMonth(e, this.month()) }}>
         {this.month()}
         {this.state.showMonthPopup && <this.SelectList data={this.months} />}
       </span>
@@ -100,7 +104,7 @@ class Calendar extends React.Component {
   }
 
   onKeyUpYear = e => {
-    if (e.which === 13 || e.which === 27){
+    if (e.which === 13 || e.which === 27) {
       this.setYear(e.target.value)
       this.setState({
         showYearEditor: false,
@@ -123,31 +127,41 @@ class Calendar extends React.Component {
   YearNav = () => {
     return (
       this.state.showYearEditor ?
-      <input 
-      defaultValue={this.year()}
-      className='year-editor'
-      ref={yearInput => { this.yearInput = yearInput}}
-      onKeyUp={e => { this.onKeyUpYear(e)}}
-      onChange={e => { this.onYearChange(e)}}
-      type='number'
-      placeholder='year'
-      />
-      :
-      <span 
-        className='label-year'
-        onDoubleClick={(e) => {this.showYearEditor()}}>
-        {this.year()}
-      </span>
-      
+        <input
+          defaultValue={this.year()}
+          className='year-editor'
+          ref={yearInput => { this.yearInput = yearInput }}
+          onKeyUp={e => { this.onKeyUpYear(e) }}
+          onChange={e => { this.onYearChange(e) }}
+          type='number'
+          placeholder='year'
+        />
+        :
+        <span
+          className='label-year'
+          onDoubleClick={(e) => { this.showYearEditor() }}>
+          {this.year()}
+        </span>
+
+    )
+  }
+
+  DayOptionMenu = (day) => {
+
+    return (
+      <ul className='day-options-container'>
+        <li onClick={() => this.handleMarkDayUnavailable(day)}>Unavialable</li>
+        <li onClick={(e) => this.openDayEditor(e, day)}>Details</li>
+      </ul>
     )
   }
 
 
-  onDayDoubleClick = (e , data) => {
-   this.setState({
-    showDayEditor: true,
-    dayCurrentlyEditing: data,
-   })
+  openDayEditor = (e, data) => {
+    this.setState({
+      showDayEditor: true,
+      dayCurrentlyEditing: data,
+    })
   }
 
   exitDayEditor = () => {
@@ -156,19 +170,70 @@ class Calendar extends React.Component {
       dayCurrentlyEditing: null,
     })
   }
-  
+
+  validateMonthAndYear = () => {
+    if (this.state.today.month() !== this.state.dateContext.month()) {
+      return false;
+    } else if (this.state.today.year() !== this.state.dateContext.year()) {
+      return false
+    } else return true
+  };
+
 
   componentDidMount() {
     console.log(this.state.projectId)
+    console.log(this.state.today)
     // get all events with this project id and set state with info
+
+  }
+
+  isDayPassed = (d) => {
+    if (parseInt(this.year()) < parseInt(this.state.today.format('Y'))) {
+      return true;
+    }
+    if (parseInt(this.year()) > parseInt(this.state.today.format('Y'))) {
+      return false;
+    }
+    if (parseInt(this.state.dateContext.format('M')) < parseInt(this.state.today.format('M'))) {
+      return true;
+    }
+    if (d < parseInt(this.currentDay()) && (this.state.dateContext.format('M') === this.state.today.format('M'))) {
+      return true;
+    } else return false
   }
 
 
+  handleSubmitEvent = e => {
+    e.preventDefault();
+    const { title, description, startTime, endTime } = e.target
+    const { projectId } = this.state;
 
+    EventService.postProjectEvent({
+      title: title.value,
+      description: description.value,
+      startTime: startTime.value,
+      endTime: endTime.value
+    }, projectId)
+      .then(res => console.log(res))
+
+  }
+
+  handleMarkDayUnavailable = day => {
+    console.log('Unavialable')
+    let newUnavailable = [...this.state.unavialableDays, day]
+    this.setState({ unavialableDays: newUnavailable })
+  }
+
+  toggleOptionMenu = (e, d) => {
+    if (d === this.state.dayMenuIndex) {
+      d = null;
+    }
+    this.setState({ dayMenuIndex: d })
+  }
 
 
   render() {
-
+    
     let weekdays = this.weekdaysShort.map(day => {
       return (
         <td key={day} className='week-day'>{day}</td>
@@ -176,28 +241,45 @@ class Calendar extends React.Component {
     })
 
     let blankDays = [];
-    for (let i = 0; i < this.firstDayOfMonth(); i++){
+    for (let i = 0; i < this.firstDayOfMonth(); i++) {
       blankDays.push(<td key={i * 33} className='blank-days'>{''}</td>)
     }
 
-    
+
 
     let daysInMonth = [];
-    for (let d = 1; d < (this.daysInMonth() + 1); d++){
-      let className = (d == this.currentDay() ? 'day current-day' : 'day');
+    for (let d = 1; d < (this.daysInMonth() + 1); d++) {
+      let currDayInteger = parseInt(this.currentDay())
+      let classes = ((d === currDayInteger && this.validateMonthAndYear()) ? 'day current-day' : 'day');
+      let menuOpen = this.state.dayMenuIndex === d ? true : false;
+      let isDayPassed = this.isDayPassed(d)
+      console.log(isDayPassed)
+      if (this.state.unavialableDays.includes(d)) {
+        classes += ' unavailable'
+      }
       daysInMonth.push(
-        <td key={d} onDoubleClick={e => {this.onDayDoubleClick(e, d)}} className={className}><span>{d}</span></td>
+        <CalendarDay
+          key={d}
+          classes={classes}
+          isDayPassed={isDayPassed}
+          menuOpen={menuOpen}
+          d={d}
+          openDayEditor={this.openDayEditor}
+          toggleOptionMenu={this.toggleOptionMenu}
+          DayOptionMenu={this.DayOptionMenu}
+        />
       )
     }
 
-    
+
 
     let totalSlots = [...blankDays, ...daysInMonth];
     let rows = [];
     let cells = [];
 
+
     totalSlots.forEach((row, i) => {
-      if((i % 7) !== 0) {
+      if ((i % 7) !== 0) {
         cells.push(row)
       } else {
         let insertRow = cells.slice();
@@ -205,7 +287,7 @@ class Calendar extends React.Component {
         cells = [];
         cells.push(row)
       }
-      if(i === totalSlots.length - 1){
+      if (i === totalSlots.length - 1) {
         let insertRow = cells.slice();
         rows.push(insertRow);
       }
@@ -217,15 +299,16 @@ class Calendar extends React.Component {
       )
     })
 
-    if(this.state.showDayEditor){
+    if (this.state.showDayEditor) {
       return (
         <div className='calendar-container'>
           <h2>Calendar</h2>
-          <DayEditor 
-            day={this.state.dayCurrentlyEditing} 
-            month={this.month()} 
+          <DayEditor
+            day={this.state.dayCurrentlyEditing}
+            month={this.month()}
             year={this.year()}
-            exitDayEditor={this.exitDayEditor}/>
+            exitDayEditor={this.exitDayEditor}
+            handleSubmitEvent={this.handleSubmitEvent} />
         </div>
       )
     }
