@@ -1,5 +1,7 @@
 
-
+*  {
+  box-sizing: border-box;
+}
 .calendar-container {
   display: flex;
   flex-direction: column;
@@ -11,6 +13,8 @@
 .calender {
   width: 70%;
   border: 1px solid black;
+  background-color: var(--charcoal);
+  color: white;
   border-radius: 5px;
   border-spacing: 10px;
 }
@@ -24,25 +28,27 @@
   font-size: 24px;
 }
 
-.day-passed {
-  background-color: grey;
+.day.day-passed {
+  background-color: lightgray;
+  padding: 0;
+
 }
+
 .day-header {
   display: flex;
   justify-content: flex-end;
   min-height: 30px;
 }
 
-.day-option-menu {
-  border-top-right-radius: 4px;
-}
+
+
 .day-option-menu:hover {
-  background-color: var(--seafoam);
+  background-color: rgb(179, 71, 0);
   cursor: pointer;
 }
 
 .day-option-menu.open {
-  background-color: var(--seafoam);
+  background-color: rgb(179, 71, 0);
   position: absolute;
   
 }
@@ -52,7 +58,7 @@
 }
 
 .day-options-container {
-  background-color: var(--seafoam);
+  background-color: rgb(179, 71, 0);
   list-style: none;
   text-align: left;
   margin: 0;
@@ -67,7 +73,7 @@
 }
 
 .day-options-container li:hover {
-  background-color: var(--charcoal);
+  background-color: rgb(255, 102, 0);
   color: white;
 }
 
@@ -85,23 +91,25 @@
 }
 
 .weekday-headers {
-  color: black;
+  color: white;  
   font-weight: 600;
 }
 
 
 .day {
-  width: 5%;
-  border: 1px solid black;
-  border-radius: 5px;
+  color: black;
+  width: 80px;
+  border-radius: 2px;
+  background-color: var(--seafoam);
 }
 
 .day:hover {
-  background-color: white;
+  background-color: rgb(255, 102, 0);
+  color: white;
 }
 
 .current-day {
-  border: 2px solid red;
+  border: 2px solid var(--charcoal);
 }
 
 .month-popup {

@@ -21,7 +21,7 @@ class Calendar extends React.Component {
       showDayEditor: false,
       dayCurrentlyEditing: null,
       dayMenuIndex: null,
-      unavialableDays: [1, 4, 6],
+      unavialableDays: [],
     }
   }
 
@@ -60,13 +60,24 @@ class Calendar extends React.Component {
     let monthNum = this.months.indexOf(month)
     let dateContext = Object.assign({}, this.state.dateContext)
     dateContext = moment(dateContext).set('month', monthNum)
-    this.setState({
-      dateContext
-    })
+    EventService.getUnavailableDaysForMonth(
+      (monthNum + 1),
+      this.year(),
+      this.state.projectId)
+      .then(dayArr => {
+        this.setState({
+          dateContext,
+          unavialableDays: dayArr,
+        })
+      }).catch(e => {
+        this.setState({ error: e.message })
+      })
+
   }
 
   onSelectChangeMonth = (e, data) => {
     this.setMonth(data)
+    this.setState({ unavialableDays: [] })
   }
 
   SelectList = props => {
@@ -146,11 +157,10 @@ class Calendar extends React.Component {
     )
   }
 
-  DayOptionMenu = (day) => {
-
+  DayOptionMenu = (day, isDayUnavailable) => {
     return (
       <ul className='day-options-container'>
-        <li onClick={() => this.handleMarkDayUnavailable(day)}>Unavialable</li>
+        <li onClick={() => this.toggleMarkDayUnavailable(day, isDayUnavailable)}>{isDayUnavailable ? 'Available' : 'Unavailable'}</li>
         <li onClick={(e) => this.openDayEditor(e, day)}>Details</li>
       </ul>
     )
@@ -181,11 +191,12 @@ class Calendar extends React.Component {
 
 
   componentDidMount() {
-    console.log(this.state.projectId)
-    console.log(this.state.today)
+
     // get all events with this project id and set state with info
 
   }
+
+
 
   isDayPassed = (d) => {
     if (parseInt(this.year()) < parseInt(this.state.today.format('Y'))) {
@@ -203,24 +214,41 @@ class Calendar extends React.Component {
   }
 
 
-  handleSubmitEvent = e => {
+  handleSubmitEvent = (e, day, month, year) => {
     e.preventDefault();
     const { title, description, startTime, endTime } = e.target
     const { projectId } = this.state;
 
+    console.log(day, month, year)
     EventService.postProjectEvent({
       title: title.value,
       description: description.value,
       startTime: startTime.value,
-      endTime: endTime.value
+      endTime: endTime.value,
+      day,
+      month,
+      year,
     }, projectId)
       .then(res => console.log(res))
-
   }
 
-  handleMarkDayUnavailable = day => {
-    console.log('Unavialable')
-    let newUnavailable = [...this.state.unavialableDays, day]
+  toggleMarkDayUnavailable = (day, isDayUnavailable) => {
+    const { projectId } = this.state;
+    const currUnavailable = this.state.unavialableDays;
+
+    const monthNum = this.months.indexOf(this.month()) + 1;
+    const formattedDate = moment(`${monthNum}/${day}/${this.year()}`, 'MM/DD/YYYY').format().slice(0, 10);
+
+    let newUnavailable;
+    if (isDayUnavailable) {
+      newUnavailable = currUnavailable.filter(d => d !== day);
+    } else {
+      EventService.markDateUnavailable(projectId, { date: formattedDate })
+        .then(res => {
+          console.log(res);
+        })
+      newUnavailable = [...currUnavailable, day]
+    }
     this.setState({ unavialableDays: newUnavailable })
   }
 
@@ -233,7 +261,7 @@ class Calendar extends React.Component {
 
 
   render() {
-    
+
     let weekdays = this.weekdaysShort.map(day => {
       return (
         <td key={day} className='week-day'>{day}</td>
@@ -252,16 +280,18 @@ class Calendar extends React.Component {
       let currDayInteger = parseInt(this.currentDay())
       let classes = ((d === currDayInteger && this.validateMonthAndYear()) ? 'day current-day' : 'day');
       let menuOpen = this.state.dayMenuIndex === d ? true : false;
-      let isDayPassed = this.isDayPassed(d)
-      console.log(isDayPassed)
+      let isDayPassed = this.isDayPassed(d);
+      let isDayUnavailable = false;
       if (this.state.unavialableDays.includes(d)) {
-        classes += ' unavailable'
+        classes += ' unavailable';
+        isDayUnavailable = true;
       }
       daysInMonth.push(
         <CalendarDay
           key={d}
           classes={classes}
           isDayPassed={isDayPassed}
+          isDayUnavailable={isDayUnavailable}
           menuOpen={menuOpen}
           d={d}
           openDayEditor={this.openDayEditor}
@@ -278,14 +308,14 @@ class Calendar extends React.Component {
     let cells = [];
 
 
-    totalSlots.forEach((row, i) => {
+    totalSlots.forEach((day, i) => {
       if ((i % 7) !== 0) {
-        cells.push(row)
+        cells.push(day)
       } else {
         let insertRow = cells.slice();
         rows.push(insertRow);
         cells = [];
-        cells.push(row)
+        cells.push(day)
       }
       if (i === totalSlots.length - 1) {
         let insertRow = cells.slice();

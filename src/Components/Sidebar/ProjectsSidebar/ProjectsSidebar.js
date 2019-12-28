@@ -35,7 +35,8 @@ class ProjectsSideBar extends React.Component {
 
 
   setLocalActiveIndex = i => {
-    // this.setState({currIndex: i})
+    this.setState({currIndex: i})
+    console.log(i)
     // this.props.setActiveIndex(i)
     this.context.setProjectIndex(i)
   }
