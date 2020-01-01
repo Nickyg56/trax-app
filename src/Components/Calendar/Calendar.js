@@ -21,7 +21,8 @@ class Calendar extends React.Component {
       showDayEditor: false,
       dayCurrentlyEditing: null,
       dayMenuIndex: null,
-      unavialableDays: [],
+      unavailable: [],
+      eventIndexes: [],
     }
   }
 
@@ -60,14 +61,13 @@ class Calendar extends React.Component {
     let monthNum = this.months.indexOf(month)
     let dateContext = Object.assign({}, this.state.dateContext)
     dateContext = moment(dateContext).set('month', monthNum)
-    EventService.getUnavailableDaysForMonth(
-      (monthNum + 1),
-      this.year(),
-      this.state.projectId)
-      .then(dayArr => {
+
+    this.loadUnavailableDaysAndEvents(this.state.projectId, (monthNum + 1), this.year())
+      .then(res => {
         this.setState({
           dateContext,
-          unavialableDays: dayArr,
+          unavailable: res.unavailable,
+          eventIndexes: res.eventIndexes,
         })
       }).catch(e => {
         this.setState({ error: e.message })
@@ -77,7 +77,7 @@ class Calendar extends React.Component {
 
   onSelectChangeMonth = (e, data) => {
     this.setMonth(data)
-    this.setState({ unavialableDays: [] })
+    this.setState({ unavailable: [] })
   }
 
   SelectList = props => {
@@ -125,10 +125,18 @@ class Calendar extends React.Component {
 
   setYear = year => {
     let dateContext = Object.assign({}, this.state.dateContext)
+    let monthNum = this.months.indexOf(this.month())
     dateContext = moment(dateContext).set('year', year);
-    this.setState({
-      dateContext
-    })
+    this.loadUnavailableDaysAndEvents(this.state.projectId, (monthNum + 1), this.year())
+      .then(res => {
+        this.setState({
+          dateContext,
+          unavailable: res.unavailable,
+          eventIndexes: res.eventIndexes,
+        })
+      }).catch(e => {
+        this.setState({ error: e.message })
+      })
   }
 
   onYearChange = e => {
@@ -189,10 +197,29 @@ class Calendar extends React.Component {
     } else return true
   };
 
+  async loadUnavailableDaysAndEvents(projectId, month, year){
+
+    const unavailable = await EventService.getUnavailableDaysForMonth(month, year, projectId)
+
+    const events = await EventService.getProjectEventsByMonth(projectId, month, year)
+
+    let eventIndexes = events.map(event => parseInt(event.date.slice(8)))
+
+    return { eventIndexes , unavailable }
+  }
 
   componentDidMount() {
 
-    // get all events with this project id and set state with info
+    const {projectId} = this.state;
+    let monthNum = this.months.indexOf(this.month()) + 1;
+    let year = this.year()
+
+    this.loadUnavailableDaysAndEvents(projectId, monthNum, year)
+      .then(res => this.setState({
+        unavailable: res.unavailable,
+        eventIndexes: res.eventIndexes,
+      }))
+      .catch(e => this.setState({error: e.message}))
 
   }
 
@@ -234,7 +261,7 @@ class Calendar extends React.Component {
 
   toggleMarkDayUnavailable = (day, isDayUnavailable) => {
     const { projectId } = this.state;
-    const currUnavailable = this.state.unavialableDays;
+    const currUnavailable = this.state.unavailable;
 
     const monthNum = this.months.indexOf(this.month()) + 1;
     const formattedDate = moment(`${monthNum}/${day}/${this.year()}`, 'MM/DD/YYYY').format().slice(0, 10);
@@ -249,7 +276,7 @@ class Calendar extends React.Component {
         })
       newUnavailable = [...currUnavailable, day]
     }
-    this.setState({ unavialableDays: newUnavailable })
+    this.setState({ unavailable: newUnavailable })
   }
 
   toggleOptionMenu = (e, d) => {
@@ -261,6 +288,7 @@ class Calendar extends React.Component {
 
 
   render() {
+    console.log(this.state.eventIndexes)
 
     let weekdays = this.weekdaysShort.map(day => {
       return (
@@ -282,15 +310,22 @@ class Calendar extends React.Component {
       let menuOpen = this.state.dayMenuIndex === d ? true : false;
       let isDayPassed = this.isDayPassed(d);
       let isDayUnavailable = false;
-      if (this.state.unavialableDays.includes(d)) {
+      let hasEvent = false;
+      if (this.state.unavailable.includes(d)) {
         classes += ' unavailable';
         isDayUnavailable = true;
       }
+      if (this.state.eventIndexes.includes(d)) {
+        classes += ' hasEvent';
+        hasEvent = true;
+      }
+
       daysInMonth.push(
         <CalendarDay
           key={d}
           classes={classes}
           isDayPassed={isDayPassed}
+          hasEvent={hasEvent}
           isDayUnavailable={isDayUnavailable}
           menuOpen={menuOpen}
           d={d}

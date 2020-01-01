@@ -10,11 +10,19 @@ class Sidebar extends React.Component {
 
   static contextType = UserContext;
 
-  state = {
-    headerType: config.SIDEBAR_PROJECTS,
-    currIndex: null,
-    sidebarVisible: true,
+  constructor(props){
+    super(props)
+    this.state = {
+      headerType: config.SIDEBAR_PROJECTS,
+      currIndex: null,
+      sidebarVisible: true,
+      x: 10,
+      y: 70,
+    }
+    this.ref = React.createRef()
+
   }
+  
 
   changeHeaderType = (type) => {
     this.setState({
@@ -23,7 +31,7 @@ class Sidebar extends React.Component {
   }
 
   toggleSidebarVisible = () => {
-    this.setState({ sidebarVisible: !this.state.sidebarVisible})
+    this.setState({ sidebarVisible: !this.state.sidebarVisible })
   }
 
   setActiveIndex = i => {
@@ -33,7 +41,7 @@ class Sidebar extends React.Component {
 
   determineSidebarComponent = (type) => {
     if (type === config.SIDEBAR_PROJECTS) {
-      return <ProjectsSidebar projects={this.props.projects} setActiveIndex={this.setActiveIndex} currIndex={this.state.currIndex}/>
+      return <ProjectsSidebar projects={this.props.projects} setActiveIndex={this.setActiveIndex} currIndex={this.state.currIndex} />
     } else if (type === config.SIDEBAR_CHAT) {
       return <Chat />
     } else if (type === config.SIDEBAR_EVENTS) {
@@ -41,33 +49,73 @@ class Sidebar extends React.Component {
     }
   }
 
+
+  componentDidMount(){
+    this.pos1 = 0
+    this.pos2 = 0
+    this.pos3 = 0
+    this.pos4 = 0
+  }
+  
+  onMouseDown = e => {
+    e.preventDefault()
+    
+    this.pos3 = e.clientX;
+    this.pos4 = e.clientY;
+    document.onmouseup = this.closeDragElement
+    document.onmousemove = this.elementDrag
+  }
+
+  elementDrag = e => {
+    e.preventDefault();
+   
+    this.pos1 = this.pos3 - e.clientX;
+    this.pos2 = this.pos4 - e.clientY;
+    this.pos3 = e.clientX;
+    this.pos4 = e.clientY;
+    
+    this.setState({
+      y: (this.ref.current.offsetTop - this.pos2) + 'px',
+      x: (this.ref.current.offsetLeft - this.pos1) + 'px',
+    })
+  }
+
+  closeDragElement = () => {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
   render() {
     const { headerType, sidebarVisible } = this.state;
-    console.log(sidebarVisible)
+    
+
 
     const selectedComponent = this.determineSidebarComponent(headerType)
 
-    if(sidebarVisible){
+    if (sidebarVisible) {
       return (
-        <div className={'projects-sidebar-container ' + headerType}>
+        <div className={'projects-sidebar-container ' + headerType}
+          style={{ left: this.state.x, top: this.state.y }}
+          ref={this.ref}
+          onMouseDown={e => this.onMouseDown(e)}
+        >
           <div className='chat-controller'>
-          <button onClick={this.toggleSidebarVisible}>^</button>
+            <button onClick={this.toggleSidebarVisible}>^</button>
             <span
               className={(headerType === config.SIDEBAR_PROJECTS ? 'active ' : '') + 'sidebar-header'}
-              onClick={headerType === config.SIDEBAR_PROJECTS ? () => null :  () => this.changeHeaderType(config.SIDEBAR_PROJECTS)}>              
+              onClick={headerType === config.SIDEBAR_PROJECTS ? () => null : () => this.changeHeaderType(config.SIDEBAR_PROJECTS)}>
               Projects
               </span>
             <span
               className={(headerType === config.SIDEBAR_CHAT ? 'active ' : '') + 'sidebar-header middle-header'}
-              onClick={headerType === config.SIDEBAR_CHAT ? () => null :  () => this.changeHeaderType(config.SIDEBAR_CHAT)}>
+              onClick={headerType === config.SIDEBAR_CHAT ? () => null : () => this.changeHeaderType(config.SIDEBAR_CHAT)}>
               Chat
               </span>
             <span
               className={(headerType === config.SIDEBAR_EVENTS ? 'active ' : '') + 'sidebar-header'}
-              onClick={headerType === config.SIDEBAR_EVENTS ? () => null :  () => this.changeHeaderType(config.SIDEBAR_EVENTS)}>
+              onClick={headerType === config.SIDEBAR_EVENTS ? () => null : () => this.changeHeaderType(config.SIDEBAR_EVENTS)}>
               Events
               </span>
-  
+
           </div>
           {selectedComponent}
         </div>
@@ -77,8 +125,8 @@ class Sidebar extends React.Component {
         <button className='sidebar-collapsed-button' onClick={this.toggleSidebarVisible}>Show Sidebar</button>
       </div>
     )
- 
-    
+
+
   }
 
 }

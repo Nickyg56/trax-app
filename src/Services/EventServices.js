@@ -19,8 +19,20 @@ const EventService = {
           : res.json()
       )
   },
-  getProjectEventsByMonth(projectId, month) {
-    return fetch(`${config.API_ENDPOINT}/events/${projectId}?month=${month}`, {
+  getProjectEventsByProjectId(projectId){
+    return fetch(`${config.API_ENDPOINT}/events/${projectId}`, {
+      headers: {
+        'authorization': `Bearer ${TokenService.getAuthToken()}`
+      }
+    })
+      .then(res =>
+        (!res.ok)
+          ? res.json().then(e => Promise.reject(e))
+          : res.json()
+      )
+  },
+  getProjectEventsByMonth(projectId, month, year) {
+    return fetch(`${config.API_ENDPOINT}/events/calender/${projectId}?year=${year}&month=${month}`, {
       headers: {
         'authorization': `Bearer ${TokenService.getAuthToken()}`
       }
@@ -59,6 +71,7 @@ const EventService = {
     })
   },
   getUnavailableDaysForMonth(month, year, projectId){
+    //also need to implement in the changeYear function
     return fetch(`${config.API_ENDPOINT}/events/unavailable/${projectId}/${year}/${month}`, {
       headers: {
         'authorization': `Bearer ${TokenService.getAuthToken()}`

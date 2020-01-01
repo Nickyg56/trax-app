@@ -1,0 +1,9 @@
+.event-list-container {
+  border: 1px solid red;
+  list-style: none;
+}
+
+.event-item {
+  border: 1px solid green;
+  text-decoration: none;
+}

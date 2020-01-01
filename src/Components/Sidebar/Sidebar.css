@@ -1,9 +1,7 @@
 .projects-sidebar-container {
   border: 2px solid var(--charcoal);
-  position: fixed;
-  
+  position: absolute;
   width: 300px;
-  margin-left: 10px;
   border-radius: 5px;
 }
 

@@ -72,6 +72,20 @@
   padding: 2px 5px;
 }
 
+.day-notification-container {
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.event-bubble-notification {
+  
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: purple;
+}
+
 .day-options-container li:hover {
   background-color: rgb(255, 102, 0);
   color: white;
