@@ -123,7 +123,7 @@
 }
 
 .current-day {
-  border: 2px solid var(--charcoal);
+  background-color: rgb(86, 156, 236);
 }
 
 .month-popup {

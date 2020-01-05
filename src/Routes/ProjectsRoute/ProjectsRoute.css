@@ -1,6 +1,26 @@
+.projects-route-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  
+}
+
+.project-info {
+  background-color: rgb(242, 219, 255);
+  width: 30%;
+  padding: 10px;
+  align-self: flex-end;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  text-align: left;
+}
+
+
+
 .event-list-container {
   border: 1px solid red;
   list-style: none;
+  padding: 0;
 }
 
 .event-item {

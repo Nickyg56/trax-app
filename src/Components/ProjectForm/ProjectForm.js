@@ -4,6 +4,10 @@ class ProjectForm extends React.Component {
 
   //use state to keep track of inputs with onChange handler
 
+  componentDidMount(){
+
+  }
+
   render() {
     return (
       <form className='project-form' onSubmit={this.props.onSubmitProject}>
@@ -34,7 +38,7 @@ class ProjectForm extends React.Component {
           required
         />
         </div>
-        <button className='start-project-button' type='submit'>Start Project</button>
+        <button className='project-button' type='submit'>Start Project</button>
 
       </form>
     )

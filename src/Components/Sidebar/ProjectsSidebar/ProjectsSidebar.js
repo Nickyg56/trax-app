@@ -3,6 +3,7 @@ import ProjectServices from '../../../Services/ProjectServices';
 import ProjectForm from '../../ProjectForm/ProjectForm';
 import { Link } from 'react-router-dom';
 import UserContext from '../../../Contexts/UserContext';
+import './ProjectsSidebar.css';
 
 class ProjectsSideBar extends React.Component {
 
@@ -21,6 +22,7 @@ class ProjectsSideBar extends React.Component {
 
   toggleProjectForm = () => {
     let showProjectForm = this.state.showProjectForm;
+    this.props.toggleProjectForm(showProjectForm)
     this.setState({
       showProjectForm: !showProjectForm
     })
@@ -36,8 +38,6 @@ class ProjectsSideBar extends React.Component {
 
   setLocalActiveIndex = i => {
     this.setState({currIndex: i})
-    console.log(i)
-    // this.props.setActiveIndex(i)
     this.context.setProjectIndex(i)
   }
   
@@ -89,8 +89,8 @@ class ProjectsSideBar extends React.Component {
         <ul className='projects-nav-list'>
           {projectItems}
         </ul>
-        {showProjectForm && <ProjectForm onSubmitProject={this.onSubmitProject} />}
-        <button className='project-button' onClick={this.toggleProjectForm}>{showProjectForm ? 'Cancel' : 'Add Project'}</button>
+        {showProjectForm && <ProjectForm onSubmitProject={this.onSubmitProject} toggleProjectForm={this.props.toggleProjectForm}/>}
+        <button className={'project-button' + (showProjectForm ? ' cancel-button' : '')} onClick={this.toggleProjectForm}>{showProjectForm ? 'Cancel' : 'Add Project'}</button>
       </nav>
     )
   }

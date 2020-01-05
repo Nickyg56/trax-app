@@ -31,6 +31,18 @@ const EventService = {
           : res.json()
       )
   },
+  getEventsByUserId(userId){
+    return fetch(`${config.API_ENDPOINT}/events/user_events/${userId}`, {
+      headers: {
+        'authorization': `Bearer ${TokenService.getAuthToken()}`
+      }
+    })
+      .then(res =>
+        (!res.ok)
+          ? res.json().then(e => Promise.reject(e))
+          : res.json()
+      )
+  },
   getProjectEventsByMonth(projectId, month, year) {
     return fetch(`${config.API_ENDPOINT}/events/calender/${projectId}?year=${year}&month=${month}`, {
       headers: {

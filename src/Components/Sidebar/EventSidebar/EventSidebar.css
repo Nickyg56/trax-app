@@ -1,0 +1,33 @@
+.event-sidebar-container {
+  background-color: var(--charcoal);
+  padding-top: 10px;
+  color: white;
+}
+
+.event-sidebar-header {
+  margin: 0 0 10px 0;
+}
+
+
+.event-sidebar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  margin-left: 5px;
+}
+
+.event-sidebar-list-item {
+  border-top: 1px solid var(--seafoam);
+  padding: 5px 0;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.event-sidebar-list-item p {
+  margin: 3px 0 0 0;
+  font-size: 12px;
+  color: rgb(224, 224, 224);
+}
+
+

@@ -102,6 +102,37 @@ class ProjectsRoute extends React.Component {
 
   }
 
+  sortEventsByDescendingDate(events) {
+    // console.log('SORT', parseInt(events[0].start.slice(0, 10).replace(/-/g, '')) > parseInt(events[1].start.slice(0, 10).replace(/-/g, '')))
+    return events.sort((a, b) => {
+      if (parseInt(a.start.slice(0, 10).replace(/-/g, '')) > parseInt(b.start.slice(0, 10).replace(/-/g, ''))) {
+        return 1
+      } else return -1
+    })
+  }
+
+  formatEvents(events) {
+    const sortedEvents = this.sortEventsByDescendingDate(events)
+    return sortedEvents.map((event, i) => {
+      let start = new Date(event.start)
+      let end = new Date(event.end)
+      let startTime = start.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+      let endTime = end.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+
+      return (
+        <li key={i} className='event-item'>
+          <h4>{event.title}</h4>
+          <h5>Created by: {event.createdBy}</h5>
+          <p>Event Date: {start.toDateString()}</p>
+          <p>
+            From {startTime} to {endTime}
+          </p>
+          <p>{event.description}</p>
+        </li>
+      )
+    })
+  }
+
 
   render() {
     const { loaded, currentProject, events } = this.state;
@@ -110,17 +141,8 @@ class ProjectsRoute extends React.Component {
     let eventItems;
 
     if (events.length > 0) {
-      eventItems = events.map((event, i) => {
-        return (
-          <li key={i} className='event-item'>
-            <h4>{event.title}</h4>
-            <p>{event.description}</p>
-          </li>
-
-        )
-      })
+      eventItems = this.formatEvents(events)
     }
-
 
     if (!loaded) {
       return <p>Loading...</p>
@@ -128,11 +150,14 @@ class ProjectsRoute extends React.Component {
 
     return (
       <div className='projects-route-container'>
-        <Sidebar projects={this.context.userProjects} currIndex={this.state.currIndex} />
-        <section className='project-section'>
+        <Sidebar projects={this.context.userProjects} currIndex={this.state.currIndex} isOpen={true}/>
+        <section className='project-info'>
           <h2 className='project-title'>{currentProject.title}</h2>
-          <p className='project-description'>{currentProject.description}</p>
-          <Link to={`/calendar/project/${currentProject.id}`}>View Calendar for {currentProject.title} </Link>
+          <p>Your Role: {currentProject.role}</p>
+          <p className='project-description'>Project Description: {currentProject.description}</p>
+        </section>
+        <Link to={`/calendar/project/${currentProject.id}`}>View Calendar for {currentProject.title} </Link>
+        <section className='project-events-info'>
           <h3>Events</h3>
           <ul className='event-list-container'>
             {eventItems}

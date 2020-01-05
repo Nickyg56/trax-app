@@ -41,7 +41,7 @@
 }
 
 .project-form {
-  border-top: 1px solid rgb(55, 57, 59);
+  border-top: 3px solid rgb(55, 57, 59);
   margin-top: 5px;
 }
 
@@ -50,20 +50,42 @@
   flex-direction: column;
   align-items: center;
   margin-top: 5px;
+  color: white;
 }
 
 .project-form-item > input {
   width: 60%;
   border-radius: 5px;
+  height: 20px;
   margin-top: 5px;
   border: 1px solid rgb(55, 57, 59);
 }
 
 #project-description {
-  height: 40px;
+  height: 50px;
   width: 80%;
   margin-top: 5px;
   border-radius: 5px;
+}
+
+.project-button {
+  color: white;
+  background-color: var(--seafoam);
+  border: none;
+  height: 30px;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+.project-button:hover {
+  cursor: pointer;
+}
+
+.project-button.cancel-button {
+  background-color: var(--burnt-orange);
+  height: 25px;
+
 }
 
 

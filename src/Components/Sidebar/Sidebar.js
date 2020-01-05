@@ -5,22 +5,25 @@ import Chat from './Chat/Chat';
 import config from '../../config';
 import './Sidebar.css';
 import UserContext from '../../Contexts/UserContext';
+import EventService from '../../Services/EventServices';
 
 class Sidebar extends React.Component {
 
   static contextType = UserContext;
 
+  //use props to determine if the sidebar is open and the initial position
   constructor(props){
     super(props)
     this.state = {
       headerType: config.SIDEBAR_PROJECTS,
       currIndex: null,
-      sidebarVisible: true,
+      sidebarVisible: this.props.isOpen || false,
       x: 10,
       y: 70,
+      events: [],
+      projectFormOpen: false,
     }
     this.ref = React.createRef()
-
   }
   
 
@@ -38,14 +41,26 @@ class Sidebar extends React.Component {
     this.setState({ currIndex: i })
   }
 
+  toggleProjectForm = (bool) => {
+    this.setState({
+      projectFormOpen: !bool
+    })
+  }
+
 
   determineSidebarComponent = (type) => {
     if (type === config.SIDEBAR_PROJECTS) {
-      return <ProjectsSidebar projects={this.props.projects} setActiveIndex={this.setActiveIndex} currIndex={this.state.currIndex} />
+      return (
+        <ProjectsSidebar 
+          projects={this.props.projects} 
+          setActiveIndex={this.setActiveIndex} 
+          currIndex={this.state.currIndex} 
+          toggleProjectForm={this.toggleProjectForm}
+          />)
     } else if (type === config.SIDEBAR_CHAT) {
       return <Chat />
     } else if (type === config.SIDEBAR_EVENTS) {
-      return <EventSidebar />
+      return <EventSidebar events={this.state.events} />
     }
   }
 
@@ -55,10 +70,22 @@ class Sidebar extends React.Component {
     this.pos2 = 0
     this.pos3 = 0
     this.pos4 = 0
+
+    const userId = this.context.user.id;
+
+    if(userId){
+      EventService.getEventsByUserId(userId)
+        .then(res => {
+          this.setState({
+            events: res
+          })
+        })
+    }
   }
   
   onMouseDown = e => {
     e.preventDefault()
+
     
     this.pos3 = e.clientX;
     this.pos4 = e.clientY;
@@ -85,10 +112,9 @@ class Sidebar extends React.Component {
     document.onmousemove = null;
   }
   render() {
-    const { headerType, sidebarVisible } = this.state;
+    const { headerType, sidebarVisible, projectFormOpen } = this.state;
+
     
-
-
     const selectedComponent = this.determineSidebarComponent(headerType)
 
     if (sidebarVisible) {
@@ -96,7 +122,7 @@ class Sidebar extends React.Component {
         <div className={'projects-sidebar-container ' + headerType}
           style={{ left: this.state.x, top: this.state.y }}
           ref={this.ref}
-          onMouseDown={e => this.onMouseDown(e)}
+          onMouseDown={projectFormOpen ? null : (e => this.onMouseDown(e))}
         >
           <div className='chat-controller'>
             <button onClick={this.toggleSidebarVisible}>^</button>
