@@ -380,7 +380,7 @@ class Calendar extends React.Component {
 
     return (
       <div className='calendar-container'>
-        <h2>Calendar</h2>
+          <h2>{this.props.title}</h2>
         <table className='calender'>
           <thead>
             <tr className='calendar-header'>

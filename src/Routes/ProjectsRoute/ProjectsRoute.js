@@ -25,7 +25,7 @@ class ProjectsRoute extends React.Component {
       currentProject: {},
       projectId: null,
       currIndex: null,
-      calendarVisible: false,
+      showCalendar: false,
       events: [],
       isDeleting: false,
     }
@@ -33,7 +33,7 @@ class ProjectsRoute extends React.Component {
 
 
   toggleCalendarVisible = () => {
-    this.setState({calendarVisible: !this.state.calendarVisible})
+    this.setState({showCalendar: !this.state.showCalendar})
   }
 
 
@@ -162,7 +162,7 @@ class ProjectsRoute extends React.Component {
 
 
   render() {
-    const { loaded, currentProject, events, isDeleting, calendarVisible } = this.state;
+    const { loaded, currentProject, events, isDeleting, showCalendar } = this.state;
     console.log(currentProject)
 
     const { history } = this.props
@@ -206,7 +206,11 @@ class ProjectsRoute extends React.Component {
           {isDeleting ? deleteConfirmation : ''}
           {currentProject.isAdmin ? !isDeleting ? <button onClick={this.handleDeleteProject} className='project-delete-button'>Delete Project</button> : '' : ''}
         </section>
-        {calendarVisible && <Calendar projectId={currentProject.id}/>}
+        {showCalendar && <div className='modal-container'>
+          <div className='modal'>
+            <div className='exit-modal' onClick={this.toggleCalendarVisible}>X</div>
+          <Calendar projectId={currentProject.id} title={currentProject.title}/>
+            </div></div>}
         <div className='project-info-container'>
           <section className='project-events-info'>
             <h3>Events</h3>

@@ -7,11 +7,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 3%;
+}
+
+.calendar-container h2 {
+  color: white;
 }
 
 
 .calender {
-  width: 70%;
+  width: 80%;
   border: 1px solid black;
   background-color: var(--charcoal);
   color: white;
