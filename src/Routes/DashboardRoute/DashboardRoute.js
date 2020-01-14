@@ -2,7 +2,9 @@ import React from 'react';
 import UserContext from '../../Contexts/UserContext';
 import UserService from '../../Services/UserServices';
 import Sidebar from '../../Components/Sidebar/Sidebar';
+import ProjectSearch from '../../Components/ProjectSearch/ProjectSearch';
 import './DashboardRoute.css';
+
 
 class DashBoardRoute extends React.Component {
 
@@ -57,6 +59,10 @@ class DashBoardRoute extends React.Component {
           <p>Total Projects: {projects.length}</p>
           <p>Email: {email}</p>
         </section>
+
+      <section className='project-search-container'>
+      <ProjectSearch />
+      </section>
         
       </div>
     )

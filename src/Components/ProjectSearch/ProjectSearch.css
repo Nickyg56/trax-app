@@ -1,0 +1,30 @@
+.project-search{
+  display: flex;
+  flex-direction: column;
+}
+
+#project-search-input {
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.search-results-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  background-color: var(--charcoal);
+  color: white;
+  max-height: 300px;
+  overflow: scroll;
+}
+
+.project-search-result-item {
+  text-align: left;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--seafoam);
+}
+
+.project-sri-date {
+  font-size: 12px;
+}

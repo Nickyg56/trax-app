@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import Sidebar from '../../Components/Sidebar/Sidebar';
 import UserContext from '../../Contexts/UserContext';
 import ProjectServices from '../../Services/ProjectServices';
 import UserService from '../../Services/UserServices';
 import EventService from '../../Services/EventServices';
+import Calendar from '../../Components/Calendar/Calendar';
 import './ProjectsRoute.css';
 
 
@@ -24,8 +25,15 @@ class ProjectsRoute extends React.Component {
       currentProject: {},
       projectId: null,
       currIndex: null,
+      calendarVisible: false,
       events: [],
+      isDeleting: false,
     }
+  }
+
+
+  toggleCalendarVisible = () => {
+    this.setState({calendarVisible: !this.state.calendarVisible})
   }
 
 
@@ -133,15 +141,52 @@ class ProjectsRoute extends React.Component {
     })
   }
 
+  handleDeleteProject = e => {
+    this.setState({ isDeleting: true })
+  }
+
+  cancelDeleteProject = e => {
+    this.setState({ isDeleting: false })
+  }
+
+  deleteProject = e => {
+    const id = this.state.currentProject.id;
+
+    ProjectServices.deleteProjectById(id)
+      .then(() => {
+        // this.setState({isDeleting: false})
+        const { history } = this.props
+        history.push('/dashboard')
+      })
+  }
+
 
   render() {
-    const { loaded, currentProject, events } = this.state;
+    const { loaded, currentProject, events, isDeleting, calendarVisible } = this.state;
     console.log(currentProject)
 
+    const { history } = this.props
+    console.log(history)
     let eventItems;
+
 
     if (events.length > 0) {
       eventItems = this.formatEvents(events)
+    } else {
+      eventItems = <li className='event-item'>
+        <p>No events have been added to this project. <br/> Add events from the calendar</p>
+    </li>
+    }
+
+    let deleteConfirmation;
+    if (isDeleting) {
+      deleteConfirmation =
+        <div className='project-delete-confirmation'>
+          <p>Are you sure you would like to delete this project?</p>
+          <button onClick={this.deleteProject}>Delete</button>
+          <button onClick={this.cancelDeleteProject}>Cancel</button>
+        </div>
+
     }
 
     if (!loaded) {
@@ -150,19 +195,29 @@ class ProjectsRoute extends React.Component {
 
     return (
       <div className='projects-route-container'>
-        <Sidebar projects={this.context.userProjects} currIndex={this.state.currIndex} isOpen={true}/>
-        <section className='project-info'>
+        <Sidebar projects={this.context.userProjects} currIndex={this.state.currIndex} isOpen={true} />
+        <section className='project-summary'>
+          <span className='project-summary-header'>
           <h2 className='project-title'>{currentProject.title}</h2>
+          <button onClick={this.toggleCalendarVisible} className='project-calendar-button'>Calendar</button>
+          </span>
           <p>Your Role: {currentProject.role}</p>
           <p className='project-description'>Project Description: {currentProject.description}</p>
+          {isDeleting ? deleteConfirmation : ''}
+          {currentProject.isAdmin ? !isDeleting ? <button onClick={this.handleDeleteProject} className='project-delete-button'>Delete Project</button> : '' : ''}
         </section>
-        <Link to={`/calendar/project/${currentProject.id}`}>View Calendar for {currentProject.title} </Link>
-        <section className='project-events-info'>
-          <h3>Events</h3>
-          <ul className='event-list-container'>
-            {eventItems}
-          </ul>
-        </section>
+        {calendarVisible && <Calendar projectId={currentProject.id}/>}
+        <div className='project-info-container'>
+          <section className='project-events-info'>
+            <h3>Events</h3>
+            <ul className='event-list-container'>
+              {eventItems}
+            </ul>
+          </section>
+          <section className='project-placeholder-section'>
+
+          </section>
+        </div>
       </div>
     )
   }

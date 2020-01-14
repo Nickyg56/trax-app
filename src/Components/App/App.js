@@ -6,6 +6,7 @@ import './App.css';
 import LoginRoute from '../../Routes/LoginRoute/LoginRoute';
 import DashboardRoute from '../../Routes/DashboardRoute/DashboardRoute';
 import ProjectsRoute from '../../Routes/ProjectsRoute/ProjectsRoute';
+import ProjectVisitorRoute from '../../Routes/ProjectVisitorRoute/ProjectVisitorRoute';
 import Calendar from '../Calendar/Calendar';
 
 class App extends React.Component {
@@ -45,6 +46,12 @@ class App extends React.Component {
               path='/projects/:projectId'
               component={ProjectsRoute}
             />
+
+            <Route
+              exact 
+              path='/projects/visitor/:projectId'
+              component={ProjectVisitorRoute}
+              />
 
             <Route
               exacts

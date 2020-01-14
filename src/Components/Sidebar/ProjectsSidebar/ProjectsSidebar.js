@@ -72,7 +72,8 @@ class ProjectsSideBar extends React.Component {
         <li key={i} onClick={() => this.setLocalActiveIndex(i)} className={'project-list-item ' + (this.state.currIndex === i ? 'current-project' : 'inactive-project')}>
           <Link
             to={`/projects/${project.id}`}
-            className='project-list-link'>{project.title}
+            className='project-list-link'>
+              {project.title}
           </Link>
         </li>
       )

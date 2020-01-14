@@ -5,8 +5,17 @@
   --light-blue: rgba(205,247,255,1);
   --charcoal: #424753;
   --seafoam: rgb(0, 177, 133);
+  --seafoam-dark: rgb(16, 158, 123);
+  --seafoam-transparent: rgb(0, 177, 133, .35);
   --burnt-orange: rgb(243, 85, 23);
   --seafoam-active: rgb(3, 161, 122);
+  --deep-blue: rgb(81, 112, 170);
+  --deep-blue-dark: rgb(46, 55, 85);
+  --theme-gradiant-dark: linear-gradient(90deg, rgb(78, 95, 141) 0%, var(--deep-blue) 50%, rgb(137, 120, 148) 100%);
+  --theme-gradiant-red: linear-gradient(65deg, rgb(177, 2, 89) 20%, rgb(177, 27, 85) 30%, rgb(173, 8, 71) 100%);
+  --theme-gradiant-purple: linear-gradient(65deg, rgb(61, 0, 131) 20%, rgb(41, 0, 117) 30%, rgb(65, 0, 139) 100%);
+  --theme-gradiant-blue: linear-gradient(65deg, rgb(15, 0, 83) 20%, rgb(0, 5, 80) 30%, rgb(14, 13, 66) 100%);
+
 }
 
 
@@ -16,11 +25,11 @@
 }
 
 html {
-  background: linear-gradient(90deg, var(--purple) 0%, var(--sky-blue) 50%, var(--light-blue) 100%);
+  background: var(--theme-gradiant-dark)
 }
 
 .App-header {
-  background-color: var(--charcoal)
+  background-color: var(--charcoal);
   /* background-image: repeating-linear-gradient(var(--sky-blue), var(--light-blue) 50%); */
 }
 

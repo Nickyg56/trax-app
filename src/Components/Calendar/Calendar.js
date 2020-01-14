@@ -12,7 +12,7 @@ class Calendar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      projectId: this.props.match.params.projectId,
+      projectId: this.props.projectId,
       loaded: false,
       dateContext: moment(),
       today: moment(),
