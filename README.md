@@ -1,68 +1,65 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Trax Client
 
-## Available Scripts
+Trax is an application designed to make project management more easy and efficient. Users can quickly create an account and start managing projects with their peers. 
 
-In the project directory, you can run:
+Live App: Coming soon.
 
-### `npm start`
+Server Repo: [Trax Server](https://github.com/Nickyg56/trax-server)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Overview
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Core features and components
 
-### `npm test`
+**some of the feature in the overview are still in development**
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Dashboard 
+  - From here users can see their user information. 
+  - The sidebar component gives users the ability to easily navigate to any of their projects, chat with members of a project or see which events are about to occur.
+  - The search bar allows users to find any project on the site and view a visitor page for that project.
+  - Access to personal user calendar
 
-### `npm run build`
+* ProjectsRoute
+  - Viewable by members of a project
+  - Certain actions are limited only to admins of the project 
+  - View project specific calendar
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Calendar
+  - Color coded so user can easily and intuitively see which days have passed, the current day, and upcoming days as well as which days have been marked unavailable, have events or have lists (see upcoming features below).
+  - Month and year navigation to plan far in advance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Technologies
+  - React
+  - Momentjs (used to handle dates and critical to the calendar component)
+  - Jwt-decode (used for authentication as well as persistence of essential user data)
+  - socket.io-client (used to improve user experience with components such as the project search, user search and chat)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Commands
 
-### `npm run eject`
+- npm start
+    - Runs application in development mode
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- npm run build
+    - Creates a build folder for deployment
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- npm test
+    - Launches test runner
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- npm run eject
+    - One way operation. Allows you to customize the configuration of the build to fit your needs.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### Upcoming Features
 
-## Learn More
+Currently the Trax application is being developed with a specific set of user stories in mind. Once completed these features will be deployed and tested so they can be improved and iterated upon. After the core features have been proven to work smoothly and efficiently I will begin development of the features in this section.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Email notifications for events 'day of'. 
+  - nodemailer will be used to notify users of an event they are associated with
+  - this feature will be optional (if the user doesn't wish to recieve email notifications, they won't!)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- The addition of lists to specific days.
+  - similarly to how events are handled but geared more towards tasks an individual or group
+  wishes to accomplish.
+  - User will be able to click into a day on their calendar (as long as they are an admin of the project, or on their personal calendar) and be able to click an 'Add List' button to add a list to that day.
+  - A list could be anything. Ex: Grocery List, Todo list etc.
+  - Lists can be checked of one item at a time or wholesale marked complete.
+  - A list can be saved to a users 'Lists' to be used again at anytime.
+  - Lists can be deleted and edited by the user who created the list.
