@@ -37,6 +37,7 @@ class ProjectVisitorRoute extends React.Component {
     let loggedInUser = false;
     if (this.context.user.id) {
       loggedInUser = true;
+      this.user = this.context.user
     }
 
     VisitorService.getVisitorData(this.state.projectId)
@@ -48,9 +49,16 @@ class ProjectVisitorRoute extends React.Component {
           users: res.users,
           events: res.events,
           loggedInUser,
+          hasRequested: false,
         })
       })
 
+  }
+
+  handleClickJoinProject = e => {
+    console.log(this.user)
+    VisitorService.sendJoinRequest()
+      .then(res => console.log(res))
   }
 
   makeUserItems = users => {
@@ -108,6 +116,8 @@ class ProjectVisitorRoute extends React.Component {
           <section className='project-info'>
             <h2>{project.title}</h2>
             {loggedInUser && <button onClick={this.handleClickJoinProject}>Join</button>}
+            <button onClick={this.handleClickJoinProject}>Join</button>
+            {/* {need to validate that error will properly be thrown here} */}
             <p className='project-description'>{project.description}</p>
           </section>
           <section className='project-user-info'>

@@ -6,6 +6,7 @@ import ProjectServices from '../../Services/ProjectServices';
 import UserService from '../../Services/UserServices';
 import EventService from '../../Services/EventServices';
 import Calendar from '../../Components/Calendar/Calendar';
+import RandomSVG from '../../Components/RandomSVG/RandomSVG';
 import './ProjectsRoute.css';
 
 
@@ -196,6 +197,7 @@ class ProjectsRoute extends React.Component {
     return (
       <div className='projects-route-container'>
         <Sidebar projects={this.context.userProjects} currIndex={this.state.currIndex} isOpen={true} />
+        <div className='project-summary-container'>
         <section className='project-summary'>
           <span className='project-summary-header'>
           <h2 className='project-title'>{currentProject.title}</h2>
@@ -206,6 +208,7 @@ class ProjectsRoute extends React.Component {
           {isDeleting ? deleteConfirmation : ''}
           {currentProject.isAdmin ? !isDeleting ? <button onClick={this.handleDeleteProject} className='project-delete-button'>Delete Project</button> : '' : ''}
         </section>
+        </div>
         {showCalendar && <div className='modal-container'>
           <div className='modal'>
             <div className='exit-modal' onClick={this.toggleCalendarVisible}>X</div>
@@ -219,7 +222,7 @@ class ProjectsRoute extends React.Component {
             </ul>
           </section>
           <section className='project-placeholder-section'>
-
+          <RandomSVG size={400}/>
           </section>
         </div>
       </div>

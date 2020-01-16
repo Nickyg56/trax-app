@@ -5,14 +5,21 @@
   
 }
 
+.project-summary-container {
+  width: 100%;
+  padding-right: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .project-summary {
   background: var(--deep-blue-dark);
   width: 30%;
   padding-left: 20px;
   color: white;
-  align-self: flex-end;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+
+  align-self: center;
+  border-radius: 10px;
   text-align: left;
 }
 

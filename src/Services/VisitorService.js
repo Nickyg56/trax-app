@@ -1,4 +1,5 @@
 import config from '../config';
+import TokenService from './TokenService';
 
 
 const VisitorService = {
@@ -15,6 +16,18 @@ const VisitorService = {
       : res.json()
     )
   },
+  sendJoinRequest(projectId){
+    //throw error if no user id here
+    return fetch(`${config.API_ENDPOINT}/visitor/${projectId}`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `Bearer ${TokenService.getAuthToken()}`
+      },
+      body: JSON.stringify()
+      
+    })
+  }
 }
 
 export default VisitorService;

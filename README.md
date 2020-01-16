@@ -1,6 +1,6 @@
 # Trax Client
 
-Trax is an application designed to make project management more easy and efficient. Users can quickly create an account and start managing projects with their peers. 
+Trax is an application designed to make project management easier and more efficient. Users can quickly create an account and start managing projects with their peers. 
 
 Live App: Coming soon.
 
