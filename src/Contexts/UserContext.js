@@ -54,7 +54,6 @@ export class UserProvider extends React.Component {
   }
 
   setUserProjects = projects => {
-    console.log('CONTEXT Set projects ran')
     this.setState({ userProjects: projects })
   }
 

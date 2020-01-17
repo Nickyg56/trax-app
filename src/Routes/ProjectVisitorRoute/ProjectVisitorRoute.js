@@ -2,7 +2,9 @@ import React from 'react';
 // import Sidebar from '../../Components/Sidebar/Sidebar';
 import UserContext from '../../Contexts/UserContext';
 import VisitorService from '../../Services/VisitorService';
+import ProjectService from '../../Services/ProjectServices';
 import './ProjectVisitorRoute.css';
+import UserService from '../../Services/UserServices';
 
 
 
@@ -16,6 +18,8 @@ class ProjectVisitorRoute extends React.Component {
       loaded: false,
       project: {},
       users: [],
+      userProjects: [],
+      isMember: false,
       projectId: this.props.match.params.projectId || null,
       //verifies if the user has requested to join the project they are visiting yet.
       requestSent: false,
@@ -39,28 +43,41 @@ class ProjectVisitorRoute extends React.Component {
       loggedInUser = true;
       this.user = this.context.user
     }
-
     // if loggedInUser fetch visitor data with user id to check if a request has been sent.
 
     VisitorService.getVisitorData(this.state.projectId)
       .then(res => {
-        this.setState({
-          loaded: true,
-          project: res.project,
-          users: res.users,
-          events: res.events,
-          loggedInUser,
-        })
+        if(this.user.id){
+          UserService.getUserProjects()
+            .then(projects => {
+              let isMember = ProjectService.isUserMemberOfProject(this.state.projectId, projects)
+              this.setState({
+                loaded: true,
+                project: res.project,
+                users: res.users,
+                events: res.events,
+                userProjects: projects,
+                loggedInUser,
+                isMember,
+              })
+            })
+        } else {
+          this.setState({
+            loaded: true,
+            project: res.project,
+            users: res.users,
+            events: res.events,
+            loggedInUser,
+          })
+        }
+        
       })
 
   }
 
   handleClickJoinProject = e => {
-    console.log(this.user)
     VisitorService.sendJoinRequest(this.state.projectId)
       .then(res => {
-
-        console.log(res)
         this.setState({requestSent: true})
       })
   }
@@ -96,10 +113,22 @@ class ProjectVisitorRoute extends React.Component {
     }
   }
 
+  makeJoinButton = (isMember, loggedInUser, requestSent) => {
+    if(!loggedInUser){
+      return ''
+    } else if(isMember){
+      return <p className='member-visitor-text'>You're a member of this project</p>
+    } else {
+      return <button 
+                onClick={requestSent ? () => {} : this.handleClickJoinProject}>
+                {requestSent ? 'Request Sent' : 'Join'}
+              </button>
+    }
+  }
+
   render() {
 
-    const { loaded, project, users, events, loggedInUser, requestSent } = this.state;
-    console.log(loggedInUser, project)
+    const { loaded, project, users, events, loggedInUser, requestSent, isMember } = this.state;
 
     if (!loaded) {
       return <p>Loading</p>
@@ -110,6 +139,7 @@ class ProjectVisitorRoute extends React.Component {
 
     let eventItems = this.makeEventItems(events);
 
+    let joinButton = this.makeJoinButton(isMember, loggedInUser, requestSent)
 
 
 
@@ -119,7 +149,7 @@ class ProjectVisitorRoute extends React.Component {
         <div className='project-info-container'>
           <section className='project-info'>
             <h2>{project.title}</h2>
-            {loggedInUser && <button onClick={requestSent ? () => {} : this.handleClickJoinProject}>{requestSent ? 'Request Sent' : 'Join'}</button>}
+            {joinButton}
             <p className='project-description'>{project.description}</p>
           </section>
           <section className='project-user-info'>

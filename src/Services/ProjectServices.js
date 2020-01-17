@@ -59,6 +59,42 @@ const ProjectServices = {
           : res
       )
   },
+  isUserMemberOfProject(projectId, projectArr){
+
+    projectId = parseInt(projectId)
+
+    let result = projectArr.find(project => project.id === projectId)
+  
+    return !!result
+  },
+  getProjectJoinRequestsWhereUserAdmin(){
+    return fetch(`${config.API_ENDPOINT}/projects/requests`, {
+      method: 'GET',
+      headers: {
+        'authorization': `Bearer ${TokenService.getAuthToken()}`,
+      }
+    })
+    .then(res =>
+      (!res.ok)
+          ? res.json().then(e => Promise.reject(e))
+          : res.json()
+      )
+  },
+  acceptJoinRequest(joinObj){
+    return fetch(`${config.API_ENDPOINT}/projects/request/accept`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `Bearer ${TokenService.getAuthToken()}`,
+      },
+      body: JSON.stringify(joinObj)
+    })
+    .then(res =>
+      (!res.ok)
+          ? res.json().then(e => Promise.reject(e))
+          : res.json()
+      )
+  }
 }
 
 export default ProjectServices;

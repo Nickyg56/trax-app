@@ -7,7 +7,7 @@ import UserService from '../../Services/UserServices';
 import EventService from '../../Services/EventServices';
 import Calendar from '../../Components/Calendar/Calendar';
 import LoadSpinner from '../../Components/LoadSpinner/LoadSpinner';
-import RandomSVG from '../../Components/RandomSVG/RandomSVG';
+// import RandomSVG from '../../Components/RandomSVG/RandomSVG';
 import './ProjectsRoute.css';
 
 
