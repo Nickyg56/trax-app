@@ -42,6 +42,18 @@ const UserService = {
       : res.json()
     )
   },
+  getUserJoinRequests(userId){
+    return fetch(`${config.API_ENDPOINT}/projects/requests/user/${userId}`, {
+      headers: {
+        'authorization': `Bearer ${TokenService.getAuthToken()}`,
+      },
+    })
+    .then(res => 
+      (!res.ok)
+      ? res.json().then(e => Promise.reject(e))
+      : res.json()
+    )
+  }
 
 }
 

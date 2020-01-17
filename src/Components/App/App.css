@@ -15,7 +15,6 @@
   --theme-gradiant-red: linear-gradient(65deg, rgb(177, 2, 89) 20%, rgb(177, 27, 85) 30%, rgb(173, 8, 71) 100%);
   --theme-gradiant-purple: linear-gradient(65deg, rgb(61, 0, 131) 20%, rgb(41, 0, 117) 30%, rgb(65, 0, 139) 100%);
   --theme-gradiant-blue: linear-gradient(65deg, rgb(15, 0, 83) 20%, rgb(0, 5, 80) 30%, rgb(14, 13, 66) 100%);
-
 }
 
 
@@ -28,26 +27,8 @@ html {
   background: var(--theme-gradiant-dark)
 }
 
-.App-header {
-  background-color: var(--charcoal);
-  /* background-image: repeating-linear-gradient(var(--sky-blue), var(--light-blue) 50%); */
-}
 
 
-/* move to header css */
-.title {
-  font-style: oblique;
-  margin: 0;
-  padding: 2vh;
-}
 
-.title-link {
-  text-decoration: none;
-  color: white;
 
-}
-
-.title-link:hover {
-  color: rgba(175,242,255,1);
-}
 

@@ -17,8 +17,8 @@ class ProjectVisitorRoute extends React.Component {
       project: {},
       users: [],
       projectId: this.props.match.params.projectId || null,
-      //verifies if the user has requested to join the project the are visiting yet.
-      visitorRequestSent: false,
+      //verifies if the user has requested to join the project they are visiting yet.
+      requestSent: false,
       //false means the user is a guest that is not logged into an account.
       loggedInUser: false,
     }
@@ -40,16 +40,16 @@ class ProjectVisitorRoute extends React.Component {
       this.user = this.context.user
     }
 
+    // if loggedInUser fetch visitor data with user id to check if a request has been sent.
+
     VisitorService.getVisitorData(this.state.projectId)
       .then(res => {
-        console.log(res);
         this.setState({
           loaded: true,
           project: res.project,
           users: res.users,
           events: res.events,
           loggedInUser,
-          hasRequested: false,
         })
       })
 
@@ -57,8 +57,12 @@ class ProjectVisitorRoute extends React.Component {
 
   handleClickJoinProject = e => {
     console.log(this.user)
-    VisitorService.sendJoinRequest()
-      .then(res => console.log(res))
+    VisitorService.sendJoinRequest(this.state.projectId)
+      .then(res => {
+
+        console.log(res)
+        this.setState({requestSent: true})
+      })
   }
 
   makeUserItems = users => {
@@ -94,8 +98,8 @@ class ProjectVisitorRoute extends React.Component {
 
   render() {
 
-    const { loaded, project, users, events, loggedInUser } = this.state;
-    console.log(loggedInUser, events)
+    const { loaded, project, users, events, loggedInUser, requestSent } = this.state;
+    console.log(loggedInUser, project)
 
     if (!loaded) {
       return <p>Loading</p>
@@ -115,9 +119,7 @@ class ProjectVisitorRoute extends React.Component {
         <div className='project-info-container'>
           <section className='project-info'>
             <h2>{project.title}</h2>
-            {loggedInUser && <button onClick={this.handleClickJoinProject}>Join</button>}
-            <button onClick={this.handleClickJoinProject}>Join</button>
-            {/* {need to validate that error will properly be thrown here} */}
+            {loggedInUser && <button onClick={requestSent ? () => {} : this.handleClickJoinProject}>{requestSent ? 'Request Sent' : 'Join'}</button>}
             <p className='project-description'>{project.description}</p>
           </section>
           <section className='project-user-info'>

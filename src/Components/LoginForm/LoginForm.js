@@ -35,7 +35,7 @@ class LoginForm extends React.Component {
         email.value = ''
         password.value = ''
         this.context.processLogin(res)
-        this.props.onLoginSuccess()
+        this.props.onLoginSuccess(res.user)
       })
       .catch(res => {
         this.setState({ error: res.error })

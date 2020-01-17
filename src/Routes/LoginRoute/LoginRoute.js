@@ -11,12 +11,14 @@ class LoginRoute extends React.Component {
     history: {
       push: () => { }
     },
+    setUser: () => {},
   }
 
 
-  onLoginSuccess = () => {
+  onLoginSuccess = (user) => {
     console.log('On login success ran')
 
+    this.props.setUser(user)
     const { location, history } = this.props;
     const destination = (location.state || {}).from || '/dashboard'
     history.push(destination)

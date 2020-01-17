@@ -2,14 +2,18 @@
   display: flex;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(90deg, rgba(205,247,255,1) 0%, rgba(175,242,255,1) 50%, rgba(205,247,255,1) 100%);
+  background: var(--theme-gradiant-dark)
 }
 .landing-page-section {
   margin-top: 10%;
-  background-color: #2e333d;
-  height: 20vh;
+  background-color: var(--charcoal);
+  height: 30vh;
   border-radius: 10px;
-  width: 40%;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: space-between;
 }
 
 .landing-page-header {
@@ -25,5 +29,5 @@
 }
 
 .landing-page-link:hover {
-  color: rgba(175,242,255,1);
+  color: var(--seafoam);
 }

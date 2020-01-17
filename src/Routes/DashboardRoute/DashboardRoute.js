@@ -16,38 +16,69 @@ class DashBoardRoute extends React.Component {
       error: null,
       loaded: false,
       projects: null,
-      user: {}
+      user: {},
+      joinRequests: [],
     }
+  }
+
+  fetchInitialDashboardData = async (user) => {
+
+    try {
+      const projects = await UserService.getUserProjects()
+      const requests = await UserService.getUserJoinRequests(user.id)
+      //requests can be used to keep track of project request statuses for the user
+      console.log(projects, 'user projects and requests', requests)
+      this.context.setUserProjects(projects);
+  
+      this.setState({
+        loaded: true,
+        projects,
+        user,
+      })
+  
+    } catch(e){
+      console.log(e)
+      this.setState({error: e.error})
+    }
+    
   }
 
 
   componentDidMount() {
 
     this.context.setProjectIndex(null)
+
+
+    const user = {};
+
+    if (this.props.user) {
+      user.id = this.props.user.id
+      user.name = this.props.user.full_name
+      user.email = this.props.user.email
+    } else {
+      user.id = this.context.user.id
+      user.name = this.context.user.fullName
+      user.email = this.context.user.email
+    }
+
+
+
     //probably could check if the projects are already in 
     //context and if not load them in here instead of automatically doing so.
-    UserService.getUserProjects()
-      .then(res => {
-        this.context.setUserProjects(res);
-        const user = {
-          name: this.context.user.full_name,
-          email: this.context.user.email
-        }
-        this.setState({
-          loaded: true,
-          projects: res,
-          user,
-        })
-      })
+
+    this.fetchInitialDashboardData(user)
+    
   }
 
 
 
   render() {
 
-    const { loaded, projects } = this.state;
-    const { name, email } = this.state.user;
+    const { loaded, projects, user, error} = this.state;
 
+    if(error){
+    return <p>{error}</p>
+    }
     if (!loaded) {
       return <p>Loading</p>
     }
@@ -55,15 +86,15 @@ class DashBoardRoute extends React.Component {
       <div className='dashboard-container'>
         <Sidebar projects={projects} />
         <section className='user-info'>
-          <h2>{name}</h2>
+          <h2>{user.name}</h2>
           <p>Total Projects: {projects.length}</p>
-          <p>Email: {email}</p>
+          <p>Email: {user.email}</p>
         </section>
 
-      <section className='project-search-container'>
-      <ProjectSearch />
-      </section>
-        
+        <section className='project-search-container'>
+          <ProjectSearch />
+        </section>
+
       </div>
     )
   }

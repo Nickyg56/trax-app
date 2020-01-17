@@ -1,0 +1,59 @@
+.load-spinner rect{
+  fill: rgb(218, 212, 221);
+  width: 100%;
+  height:100%;
+}
+
+
+
+.load-spinner circle {
+  fill: rgb(187, 174, 194);
+  stroke-width: 4%;
+  stroke:  rgb(115, 43, 151);
+}
+
+circle:nth-child(2){
+  animation: pulse 6s infinite;
+  animation-delay: 1.5s;
+}
+
+circle:nth-child(3){
+  animation: pulse 6s infinite;
+  animation-delay: 1s;
+
+}  
+
+circle:nth-child(4){
+  animation: pulse 6s infinite;
+  animation-delay: .5s;
+}
+
+circle:nth-child(5){
+  animation: pulse 6s infinite;
+}
+
+
+.load-spinner .inner-circle {
+  fill: rgb(115, 43, 151);
+  stroke-width: 0;
+  stroke: rgb(115, 43, 151);
+  animation: grow 6s infinite;
+  animation-delay: .05s;
+}
+
+
+@keyframes pulse {
+  0%{stroke: rgb(198, 180, 206);}
+  25%{stroke: rgb(115, 43, 151);}
+  50%{stroke: rgb(198, 180, 206);}
+  75%{stroke: rgb(115, 43, 151);}
+  100%{stroke: rgb(198, 180, 206);} 
+}
+
+@keyframes grow {
+  0%{stroke-width: 4%;}
+  25%{stroke-width: .4%;}
+  50%{stroke-width: .4%;}
+  75%{stroke-width: .4%;}
+  100%{stroke-width: 0;} 
+}

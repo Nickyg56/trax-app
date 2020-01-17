@@ -23,10 +23,11 @@ const VisitorService = {
       headers: {
         'content-type': 'application/json',
         'authorization': `Bearer ${TokenService.getAuthToken()}`
-      },
-      body: JSON.stringify()
-      
-    })
+      },      
+    }).then(res =>
+      (!res.ok)
+      ? res.json().then(e => Promise.reject(e))
+      : res.json())
   }
 }
 

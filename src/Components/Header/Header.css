@@ -1,0 +1,51 @@
+.App-header {
+  background-color: var(--charcoal);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 10px 0 10px;
+}
+
+.title {
+  font-style: oblique;
+  margin: 0;
+  padding: 2vh;
+}
+
+.title-link {
+  text-decoration: none;
+  color: white;
+}
+
+.title-link:hover {
+  color: rgba(175,242,255,1);
+}
+
+
+
+.header-button {
+  color: white;
+  background-color: var(--seafoam);
+  border: none;
+  height: 30px;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 3px;
+  transition: margin .2s, box-shadow .2s;
+}
+
+.header-button:hover {
+  cursor: pointer;
+  margin-right: 2px;
+  margin-bottom: 5px;
+  box-shadow: 3px 6px 5px -1px var(--burnt-orange);
+}
+
+.signin-link {
+  text-decoration: none;
+  color: white;
+}
+
+
+

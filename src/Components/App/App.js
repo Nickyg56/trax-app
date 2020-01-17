@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import LandingPage from '../LandingPage/LandingPage';
 import RegistrationRoute from '../../Routes/RegistrationRoute/RegistrationRoute';
 import './App.css';
@@ -7,19 +7,30 @@ import LoginRoute from '../../Routes/LoginRoute/LoginRoute';
 import DashboardRoute from '../../Routes/DashboardRoute/DashboardRoute';
 import ProjectsRoute from '../../Routes/ProjectsRoute/ProjectsRoute';
 import ProjectVisitorRoute from '../../Routes/ProjectVisitorRoute/ProjectVisitorRoute';
-import Calendar from '../Calendar/Calendar';
+// import Calendar from '../Calendar/Calendar';
+import Header from '../Header/Header';
 
 class App extends React.Component {
 
 
+  state = {
+    user: null,
+  }
+
+
+  setUser = user => {
+    this.setState({ user })
+  }
+
 
   render() {
+
+    const {user} = this.state
+
     return (
       <div className="App">
         <main>
-          <header className='App-header'>
-            <h1 className='title'><Link to='/dashboard' className='title-link' >Trax</Link></h1>
-          </header>
+          <Header />
           <Switch>
             <Route
               exact path='/'
@@ -27,7 +38,7 @@ class App extends React.Component {
             />
             <Route
               path='/login'
-              component={LoginRoute}
+              render={(props) => <LoginRoute {...props} setUser={this.setUser}/>}
             />
 
             <Route
@@ -38,7 +49,7 @@ class App extends React.Component {
             <Route
               exact
               path='/dashboard'
-              component={DashboardRoute}
+              render={(props) => <DashboardRoute {...props} user={user} />}
             />
 
             <Route
@@ -53,7 +64,7 @@ class App extends React.Component {
               component={ProjectVisitorRoute}
               />
 
-            <Route
+            {/* <Route
               exacts
               path='/calendar/project/:projectId'
               render={(props) => {
@@ -61,7 +72,7 @@ class App extends React.Component {
                   <Calendar {...props} calendarType={'project'}/>
                 )
               }}
-            />
+            /> */}
 
           </Switch>
         </main>

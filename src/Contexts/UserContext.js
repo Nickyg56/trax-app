@@ -33,7 +33,7 @@ export class UserProvider extends React.Component {
     if(TokenService.hasAuthToken())
       state.user = {
         id: jwtPayload.user_id,
-        full_name: jwtPayload.full_name,
+        fullName: jwtPayload.full_name,
         email: jwtPayload.email,
       }
       this.state = state;
@@ -48,7 +48,8 @@ export class UserProvider extends React.Component {
   }
 
   setUser = user => {
-    console.log('CONTEXT Set user ran')
+    console.log('CONTEXT Set user ran', user)
+    
     this.setState({ user })
   }
 

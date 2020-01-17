@@ -6,6 +6,7 @@ import ProjectServices from '../../Services/ProjectServices';
 import UserService from '../../Services/UserServices';
 import EventService from '../../Services/EventServices';
 import Calendar from '../../Components/Calendar/Calendar';
+import LoadSpinner from '../../Components/LoadSpinner/LoadSpinner';
 import RandomSVG from '../../Components/RandomSVG/RandomSVG';
 import './ProjectsRoute.css';
 
@@ -191,7 +192,7 @@ class ProjectsRoute extends React.Component {
     }
 
     if (!loaded) {
-      return <p>Loading...</p>
+      return <LoadSpinner width={500} height={500} />
     }
 
     return (
@@ -222,7 +223,8 @@ class ProjectsRoute extends React.Component {
             </ul>
           </section>
           <section className='project-placeholder-section'>
-          <RandomSVG size={400}/>
+          {/* <RandomSVG size={400}/> */}
+          <LoadSpinner width={400} height={400}/>
           </section>
         </div>
       </div>

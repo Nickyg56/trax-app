@@ -79,7 +79,7 @@ class ProjectSearch extends React.Component {
             type='text'
             id='project-search-input'
             name='search'
-            placeholder='search projects...'
+            placeholder='search all projects...'
             onChange={e => this.handleInputChange(e)}
           />
         
