@@ -3,8 +3,10 @@ import React from 'react';
 import UserContext from '../../Contexts/UserContext';
 import VisitorService from '../../Services/VisitorService';
 import ProjectService from '../../Services/ProjectServices';
-import './ProjectVisitorRoute.css';
 import UserService from '../../Services/UserServices';
+import ProjectJoinForm from './ProjectJoinForm';
+import './ProjectVisitorRoute.css';
+
 
 
 
@@ -23,6 +25,7 @@ class ProjectVisitorRoute extends React.Component {
       projectId: this.props.match.params.projectId || null,
       //verifies if the user has requested to join the project they are visiting yet.
       requestSent: false,
+      joinClicked: false,
       //false means the user is a guest that is not logged into an account.
       loggedInUser: false,
     }
@@ -47,7 +50,7 @@ class ProjectVisitorRoute extends React.Component {
 
     VisitorService.getVisitorData(this.state.projectId)
       .then(res => {
-        if(this.user.id){
+        if (this.user.id) {
           UserService.getUserProjects()
             .then(projects => {
               let isMember = ProjectService.isUserMemberOfProject(this.state.projectId, projects)
@@ -70,15 +73,35 @@ class ProjectVisitorRoute extends React.Component {
             loggedInUser,
           })
         }
-        
+
       })
 
   }
 
   handleClickJoinProject = e => {
-    VisitorService.sendJoinRequest(this.state.projectId)
+    this.setState({ joinClicked: true })
+    
+  }
+
+  handleCancelJoin = e => {
+    this.setState({ joinClicked: false })
+  }
+
+  handleSubmitJoinForm = e => {
+    e.preventDefault()
+    const { message } = e.target
+    console.log(message.value)
+
+    VisitorService.sendJoinRequest(this.state.projectId, message.value)
       .then(res => {
-        this.setState({requestSent: true})
+
+        message.value = ''
+
+        this.setState({
+          requestSent: true,
+          joinClicked: false 
+        })
+
       })
   }
 
@@ -98,6 +121,7 @@ class ProjectVisitorRoute extends React.Component {
   }
 
   makeEventItems = events => {
+    //refactor to filter past events
     if (events.length > 0) {
       return events.map((event, i) => {
         let start = new Date(event.start)
@@ -114,22 +138,25 @@ class ProjectVisitorRoute extends React.Component {
   }
 
   makeJoinButton = (isMember, loggedInUser, requestSent) => {
-    if(!loggedInUser){
+    if (!loggedInUser) {
       return ''
-    } else if(isMember){
+    } else if (isMember) {
       return <p className='member-visitor-text'>You're a member of this project</p>
     } else {
-      return <button 
-                onClick={requestSent ? () => {} : this.handleClickJoinProject}>
-                {requestSent ? 'Request Sent' : 'Join'}
-              </button>
+      return <button
+        onClick={requestSent ? () => { } : this.handleClickJoinProject}
+        className={requestSent ? 'button-request-sent' : 'join-button'}
+        disabled={requestSent}>
+        {requestSent ? 'Request Sent' : 'Join'}
+      </button>
     }
   }
 
   render() {
 
-    const { loaded, project, users, events, loggedInUser, requestSent, isMember } = this.state;
-
+    const { loaded, project, users, events, loggedInUser, requestSent, isMember, joinClicked } = this.state;
+    console.log(joinClicked)
+    //use join clicked to show a modal with a request form that includes a message input
     if (!loaded) {
       return <p>Loading</p>
     }
@@ -149,7 +176,11 @@ class ProjectVisitorRoute extends React.Component {
         <div className='project-info-container'>
           <section className='project-info'>
             <h2>{project.title}</h2>
-            {joinButton}
+            {!joinClicked && joinButton}
+            {joinClicked && <ProjectJoinForm
+              handleSubmitJoinForm={this.handleSubmitJoinForm}
+              handleCancelJoin={this.handleCancelJoin}
+            />}
             <p className='project-description'>{project.description}</p>
           </section>
           <section className='project-user-info'>
@@ -162,11 +193,11 @@ class ProjectVisitorRoute extends React.Component {
         <div className='events-info-container'>
           <section className='events-info'>
             <h2>Events</h2>
-          <ul className='project-events-list'>
-            {eventItems}
-          </ul>
+            <ul className='project-events-list'>
+              {eventItems}
+            </ul>
           </section>
-          
+
         </div>
       </div>
     )

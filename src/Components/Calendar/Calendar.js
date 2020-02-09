@@ -256,7 +256,12 @@ class Calendar extends React.Component {
       month,
       year,
     }, projectId)
-      .then(res => console.log(res))
+      .then(res => {
+        let newEventIndexes = this.state.eventIndexes;
+        newEventIndexes.push(parseInt(day))
+        this.setState({eventIndexes: newEventIndexes})
+
+      })
   }
 
   toggleMarkDayUnavailable = (day, isDayUnavailable) => {

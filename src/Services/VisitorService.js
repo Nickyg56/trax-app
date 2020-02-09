@@ -16,14 +16,14 @@ const VisitorService = {
       : res.json()
     )
   },
-  sendJoinRequest(projectId){
-    //throw error if no user id here
+  sendJoinRequest(projectId, message){
     return fetch(`${config.API_ENDPOINT}/visitor/${projectId}`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
         'authorization': `Bearer ${TokenService.getAuthToken()}`
-      },      
+      },
+      body: JSON.stringify({message})      
     }).then(res =>
       (!res.ok)
       ? res.json().then(e => Promise.reject(e))

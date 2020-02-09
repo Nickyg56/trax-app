@@ -11,6 +11,10 @@
 
 .project-info {
   flex: .5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
   border-radius: 5px;
   border: 1px solid var(--deep-blue-dark);
   box-shadow: 4px 5px 5px 0px var(--deep-blue-dark);
@@ -19,13 +23,46 @@
   background-color: var(--charcoal);
 }
 
+.project-info h2 {
+  flex: .7;
+}
+
+.join-button {
+  color: white;
+  background-color: var(--seafoam);
+  height: 30px;
+  font-size: 14px;
+  width: 50px;
+  border: none;
+  border-radius: 5px;
+  transition: margin .2s, box-shadow .2s;
+}
+
+.join-button:hover {
+  cursor: pointer;
+  margin-bottom: 3px;
+  box-shadow: 0px 6px 6px -2px var(--burnt-orange);
+}
+
+.button-request-sent {
+  color: white;
+  background-color: var(--seafoam);
+  padding: 2%;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+}
+
+.button-request-sent:hover {
+  cursor: not-allowed;
+}
+
 
 .project-user-info {
   flex: .3;
   color: white;
   border: 1px solid var(--deep-blue-dark);
   background-image: var(--theme-gradiant-purple);
-
 }
 
 .project-user-info h3 {

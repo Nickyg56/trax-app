@@ -21,6 +21,7 @@ class DashBoardRoute extends React.Component {
       projectRequests: [],
       currentRequestData: null,
       showAcceptUserModal: false,
+      isUserSearching: false,
     }
   }
 
@@ -68,6 +69,12 @@ class DashBoardRoute extends React.Component {
     this.fetchInitialDashboardData(user)
   }
 
+  setIsUserSearching = () => {
+    this.setState({
+      isUserSearching: !this.state.isUserSearching,
+    })
+  }
+
 
   handleAcceptRequest = (userId, projectId) => {
     console.log('handle accept ran')
@@ -83,8 +90,8 @@ class DashBoardRoute extends React.Component {
 
   submitAcceptUser = e => {
     e.preventDefault();
-    const {role} = e.target;
-    const {userId, projectId} = this.state.currentRequestData
+    const { role } = e.target;
+    const { userId, projectId } = this.state.currentRequestData
     console.log(role.value, userId, projectId)
     //need isAdmin as well!!!!!
 
@@ -93,13 +100,13 @@ class DashBoardRoute extends React.Component {
       userId,
       projectId
     })
-    .then(() => {
-      role.value = ''
-      this.setState({
-        showAcceptUserModal: false,
-        currentRequestData: null,
+      .then(() => {
+        role.value = ''
+        this.setState({
+          showAcceptUserModal: false,
+          currentRequestData: null,
+        })
       })
-    })
 
   }
 
@@ -115,17 +122,27 @@ class DashBoardRoute extends React.Component {
     let listItems = [];
 
     for (let i = 0; i < requests.length; i++) {
-      let header = <h4>{requests[i][0]}</h4>
+      let header = <h4 className='join-request-project'>{requests[i][0]}</h4>
       let items = requests[i][1].map((joinRequest, index) => {
         return (
-          <div key={index} className='project-join-request'>
-            <h4>{joinRequest.userName}</h4>
-            <p>{joinRequest.message}</p>
-            <button onClick={() => this.handleAcceptRequest(joinRequest.userId, joinRequest.projectId)}>Accept</button>
-            <button onClick={() => this.handleRejectRequest(joinRequest.userId, joinRequest.projectId)}>Reject</button>
+          <div key={index} className='join-request-content'>
+            <h5 className='join-request-name'>From: {joinRequest.userName}</h5>
+            <p>Message: {joinRequest.message}</p>
+            <span className='join-request-buttons'>
+            <button
+              className='accept-button'
+              onClick={() => this.handleAcceptRequest(joinRequest.userId, joinRequest.projectId)}>
+              Accept
+              </button>
+            <button
+              className='reject-button'
+              onClick={() => this.handleRejectRequest(joinRequest.userId, joinRequest.projectId)}>
+              Reject
+              </button>
+            </span>
           </div>)
       })
-      listItems.push(<li key={i}>{header}{items}</li>)
+      listItems.push(<li key={i} className='join-request-item'>{header}{items}</li>)
     }
 
 
@@ -137,7 +154,7 @@ class DashBoardRoute extends React.Component {
 
   render() {
 
-    const { loaded, projects, user, error, projectRequests, showAcceptUserModal } = this.state;
+    const { loaded, projects, user, error, projectRequests, showAcceptUserModal, isUserSearching } = this.state;
 
 
     let acceptUserModal;
@@ -175,16 +192,23 @@ class DashBoardRoute extends React.Component {
           <p>Email: {user.email}</p>
         </section>
 
-        <section className='project-search-container'>
-          <ProjectSearch />
-        </section>
+        <div className='dashboard project-info-container'>
+          <section className={'project-search-container' + (isUserSearching ? ' active' : '')}>
+            <ProjectSearch
+              setIsUserSearching={this.setIsUserSearching}
+              isUserSearching={isUserSearching}
+            />
+          </section>
 
-        <section className='project-join-requests-container'>
-          <h3>Project Requests</h3>
-          <ul className='project-join-requests-list'>
-            {this.makeProjectRequestItems(projectRequests)}
-          </ul>
-        </section>
+          <section className='project-join-requests-container'>
+            <h3 className='project-request-section-header'>Project Requests</h3>
+            <ul className='project-join-requests-list'>
+              {this.makeProjectRequestItems(projectRequests)}
+            </ul>
+          </section>
+        </div>
+
+
       </div>
     )
   }

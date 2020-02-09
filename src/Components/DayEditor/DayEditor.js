@@ -69,10 +69,8 @@ class DayEditor extends React.Component {
               </div>
               <div className='event-form-buttons'>
                 <button type='submit' className='event-submit-button'>Add Event</button>
-
                 <button onClick={this.closeEventForm}>Close</button>
               </div>
-
             </form>
             :
             <button onClick={this.openEventForm}>Click to add an event</button>

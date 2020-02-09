@@ -14,7 +14,7 @@ function SearchResultItem(props) {
   return (
     <li key={props.id} className='project-search-result-item'>
       <h4>{props.title}</h4>
-      <Link to={`/projects/visitor/${props.id}`}>View Project</Link>
+      <Link to={`/projects/visitor/${props.id}`} className='project-sri-link'>View Project</Link>
       <p>{description}</p>
       <span className='project-sri-date'>Created: {formattedDate.toDateString().slice(3)}</span>
     </li>

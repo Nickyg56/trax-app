@@ -6,11 +6,16 @@ import ProjectServices from '../../Services/ProjectServices';
 
 class ProjectSearch extends React.Component {
 
-  state = {
-    loaded: false,
-    projectSearchQuery: null,
-    searchResults: [],
+  constructor(props){
+    super(props)
+    this.state = {
+      loaded: false,
+      projectSearchQuery: null,
+      searchResults: [],
+      isUserSearching: this.props.isUserSearching
+    }
   }
+  
 
   formatQueryString(string) {
     return string.split(' ').join('%20')
@@ -78,9 +83,11 @@ class ProjectSearch extends React.Component {
           <input
             type='text'
             id='project-search-input'
+            className={this.props.isUserSearching ? 'search-active' : ''}
             name='search'
             placeholder='search all projects...'
             onChange={e => this.handleInputChange(e)}
+            onFocus={this.props.setIsUserSearching}
           />
         
         <ul className='search-results-list'>

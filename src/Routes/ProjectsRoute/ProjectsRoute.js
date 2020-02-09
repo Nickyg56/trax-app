@@ -25,6 +25,7 @@ class ProjectsRoute extends React.Component {
       loaded: false,
       users: [],
       currentProject: {},
+      currentUser: {},
       projectId: null,
       currIndex: null,
       showCalendar: false,
@@ -35,9 +36,36 @@ class ProjectsRoute extends React.Component {
 
 
   toggleCalendarVisible = () => {
-    this.setState({showCalendar: !this.state.showCalendar})
+    this.setState({ showCalendar: !this.state.showCalendar })
   }
 
+  findCurrentUser = (users, userId) => {
+    let currUser = users.find(user => userId === user.id)
+
+    return currUser;
+  }
+
+  fetchInitialProjectData = async (projectId) => {
+    try {
+      const project = await ProjectServices.getProjectById(projectId)
+
+      let currentUser = this.findCurrentUser(project.users, this.context.user.id)
+  
+      const events = await EventService.getProjectEventsByProjectId(projectId)
+  
+      this.setState({
+        currentProject: project.project,
+        users: project.users,
+        loaded: true,
+        projectId,
+        currentUser,
+        events,
+      })
+    } catch(e) {
+      this.setState({error: e})
+    }
+    
+  }
 
   componentDidMount() {
 
@@ -54,27 +82,8 @@ class ProjectsRoute extends React.Component {
     }
     if (!this.state.currentProject.title) {
       let { projectId } = this.props.match.params;
-      ProjectServices.getProjectById(projectId)
-        .then(res => {
-          this.setState({
-            currentProject: res.project,
-            users: res.users,
-            loaded: true,
-            projectId
-          })
-        })
-        .then(() => {
-          EventService.getProjectEventsByProjectId(projectId)
-            .then(res => {
-              console.log('events', res)
-              this.setState({
-                events: res,
-              })
-            })
-        })
-        .catch(res => {
-          this.setState({ error: res.error })
-        })
+
+      this.fetchInitialProjectData(projectId)
 
     } else {
       this.setState({
@@ -164,20 +173,24 @@ class ProjectsRoute extends React.Component {
 
 
   render() {
-    const { loaded, currentProject, events, isDeleting, showCalendar } = this.state;
-    console.log(currentProject)
+    const { loaded, currentProject, events, isDeleting, showCalendar, currentUser } = this.state;
 
-    const { history } = this.props
-    console.log(history)
+    // const { history } = this.props
+
+    console.log(currentUser)
     let eventItems;
 
+
+    if (!loaded) {
+      return <LoadSpinner width={500} height={500} />
+    }
 
     if (events.length > 0) {
       eventItems = this.formatEvents(events)
     } else {
       eventItems = <li className='event-item'>
-        <p>No events have been added to this project. <br/> Add events from the calendar</p>
-    </li>
+        <p>No events have been added to this project. <br /> Add events from the calendar</p>
+      </li>
     }
 
     let deleteConfirmation;
@@ -191,30 +204,28 @@ class ProjectsRoute extends React.Component {
 
     }
 
-    if (!loaded) {
-      return <LoadSpinner width={500} height={500} />
-    }
+
 
     return (
       <div className='projects-route-container'>
         <Sidebar projects={this.context.userProjects} currIndex={this.state.currIndex} isOpen={true} />
         <div className='project-summary-container'>
-        <section className='project-summary'>
-          <span className='project-summary-header'>
-          <h2 className='project-title'>{currentProject.title}</h2>
-          <button onClick={this.toggleCalendarVisible} className='project-calendar-button'>Calendar</button>
-          </span>
-          <p>Your Role: {currentProject.role}</p>
-          <p className='project-description'>Project Description: {currentProject.description}</p>
-          {isDeleting ? deleteConfirmation : ''}
-          {currentProject.isAdmin ? !isDeleting ? <button onClick={this.handleDeleteProject} className='project-delete-button'>Delete Project</button> : '' : ''}
-        </section>
+          <section className='project-summary'>
+            <span className='project-summary-header'>
+              <h2 className='project-title'>{currentProject.title}</h2>
+              <button onClick={this.toggleCalendarVisible} className='project-calendar-button'>Calendar</button>
+            </span>
+            <p>Your Role: {currentUser.role}</p>
+            <p className='project-description'>Project Description: {currentProject.description}</p>
+            {isDeleting ? deleteConfirmation : ''}
+            {currentUser.isAdmin ? !isDeleting ? <button onClick={this.handleDeleteProject} className='project-delete-button'>Delete Project</button> : '' : ''}
+          </section>
         </div>
         {showCalendar && <div className='modal-container'>
           <div className='modal'>
             <div className='exit-modal' onClick={this.toggleCalendarVisible}>X</div>
-          <Calendar projectId={currentProject.id} title={currentProject.title}/>
-            </div></div>}
+            <Calendar projectId={currentProject.id} title={currentProject.title} />
+          </div></div>}
         <div className='project-info-container'>
           <section className='project-events-info'>
             <h3>Events</h3>
@@ -223,8 +234,8 @@ class ProjectsRoute extends React.Component {
             </ul>
           </section>
           <section className='project-placeholder-section'>
-          {/* <RandomSVG size={400}/> */}
-          <LoadSpinner width={400} height={400}/>
+            {/* <RandomSVG size={400}/> */}
+            <LoadSpinner width={400} height={400} />
           </section>
         </div>
       </div>

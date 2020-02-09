@@ -1,24 +1,130 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin-top: 15px;
 }
 
 .user-info {
   align-self: flex-end;
-  border: 1px solid red;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   text-align: left;
-  background-color: rgb(242, 219, 255);
+  color: white;
+  background-image: var(--theme-gradiant-dark);
   width: 30%;
   padding: 10px;
 }
 
-.project-search-container {
-  width: 30%;
+.dashboard.project-info-container {
+  display: flex;
+  margin-top: 2%;
+  padding: 0;
+  justify-content: space-around;
+  color: white;
 }
+
+.project-search-container {
+  align-self: flex-start;
+  padding: 10px;
+  flex: .5;
+  border: 1px solid var(--charcoal);
+  border-radius: 3px;
+  background-color: var(--deep-blue-dark);
+}
+
+.project-join-requests-container {
+  flex: .4;
+  border: 1px solid black;
+  background-image: var(--theme-gradiant-blue);
+}
+
+.project-request-section-header {
+  font-size: 22px;
+}
+
+.project-join-requests-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 10px 0 10px;
+  max-height: 500px;
+  overflow: scroll;
+}
+
+.join-request-item {
+  border-top: 1px solid var(--seafoam);
+  border-bottom: 1px solid var(--seafoam);
+  background-color: var(--seafoam-transparent);
+  margin-bottom: 5px;
+  padding: 2%;
+  text-align: left;
+}
+
+.join-request-content {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--seafoam);
+}
+
+.join-request-project {
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.join-request-name {
+  padding: 10px 0 10px 0;
+  margin: 0;
+}
+
+.join-request-buttons {
+  display: flex;
+  border-top: 1px solid var(--charcoal);
+}
+
+.reject-button, .accept-button {
+  color: white;
+  width: 100%;
+  border: none;
+  height: 30px;
+  font-weight: 500;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color .8s;
+}
+
+.accept-button {
+  background-color: var(--seafoam);
+  margin-right: 3px;
+}
+
+.reject-button {
+  background-color: var(--burnt-orange);
+  margin-left: 3px;
+
+}
+
+.reject-button:hover {
+  cursor: pointer;
+  background-color: var(--burnt-orange-active);
+}
+
+.accept-button:hover {
+  cursor: pointer;
+  background-color: var(--seafoam-active);
+}
+
+
+
+/* .project-search-container.active {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.445);
+  overflow-y: scroll
+} */
 
 
 .request-modal {

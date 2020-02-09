@@ -1,5 +1,7 @@
 .projects-sidebar-container {
-  border: 2px solid var(--charcoal);
+  border: 2px solid#25272e;
+  padding: 8px;
+  background-color: var(--charcoal);
   position: absolute;
   width: 300px;
   border-radius: 5px;
@@ -17,7 +19,7 @@
 
 .project-list-item {
   text-align: left;
-  margin-left: 5px;
+  /* margin-left: 5px; */
 }
 
 .inactive-project:hover {
@@ -92,7 +94,9 @@
 .chat-controller {
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid var(--charcoal);
+  /* border-bottom: 1px solid var(--charcoal); */
+  border: 2px solid #25272e;
+
   background-color: var(--seafoam-dark);
   color: white;
   border-top-left-radius: 3px;
@@ -116,12 +120,13 @@
 
 }
 .active {
-  background-color: var(--charcoal);
+  background-color: #25272e;
+  border: 1px solid #25272e;
   color: white;
 }
 
 .sidebar-header.active:hover {
-  cursor: default;
+  cursor: move;
 }
 
 .projects-sidebar {
@@ -132,6 +137,8 @@
   /* background: linear-gradient(90deg, var(--purple) 0%, var(--sky-blue) 140%); */
   background-color: var(--seafoam);
 }
+
+
 
 .sidebar-collapsed-container {
   position: absolute;

@@ -68,7 +68,7 @@ export class UserProvider extends React.Component {
     const authToken = response.authToken;
     const user = response.user;
     TokenService.saveAuthToken(authToken)
-    this.setUser({user})
+    this.setUser(user)
   }
 
   processLogout = () => {
