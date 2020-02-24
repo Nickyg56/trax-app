@@ -53,35 +53,35 @@ const ProjectServices = {
         'authorization': `Bearer ${TokenService.getAuthToken()}`,
       }
     })
-    .then(res =>
-      (!res.ok)
+      .then(res =>
+        (!res.ok)
           ? res.json().then(e => Promise.reject(e))
           : res
       )
   },
-  isUserMemberOfProject(projectId, projectArr){
+  isUserMemberOfProject(projectId, projectArr) {
 
     projectId = parseInt(projectId)
 
     let result = projectArr.find(project => project.id === projectId)
-  
+
     return !!result
   },
-  getProjectJoinRequestsWhereUserAdmin(){
+  getProjectJoinRequestsWhereUserAdmin() {
     return fetch(`${config.API_ENDPOINT}/projects/requests`, {
       method: 'GET',
       headers: {
         'authorization': `Bearer ${TokenService.getAuthToken()}`,
       }
     })
-    .then(res =>
-      (!res.ok)
+      .then(res =>
+        (!res.ok)
           ? res.json().then(e => Promise.reject(e))
           : res.json()
       )
   },
-  acceptJoinRequest(joinObj){
-    return fetch(`${config.API_ENDPOINT}/projects/request/accept`, {
+  acceptJoinRequest(joinObj) {
+    return fetch(`${config.API_ENDPOINT}/projects/requests/accept`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -89,10 +89,23 @@ const ProjectServices = {
       },
       body: JSON.stringify(joinObj)
     })
-    .then(res =>
-      (!res.ok)
+      .then(res =>
+        (!res.ok)
           ? res.json().then(e => Promise.reject(e))
           : res.json()
+      )
+  },
+  rejectJoinRequest(requestId) {
+    return fetch(`${config.API_ENDPOINT}/projects/requests/reject/${requestId}`, {
+      method: 'DELETE',
+      headers: {
+        'authorization': `Bearer ${TokenService.getAuthToken()}`
+      }
+    })
+      .then(res =>
+        (!res.ok)
+          ? res.json().then(e => Promise.reject(e))
+          : res
       )
   }
 }

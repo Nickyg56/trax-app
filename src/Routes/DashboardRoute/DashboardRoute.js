@@ -88,6 +88,18 @@ class DashBoardRoute extends React.Component {
     })
   }
 
+  handleRejectRequest = (requestId) => {
+    console.log('handle reject ran')
+
+    console.log(requestId)
+
+    ProjectService.rejectJoinRequest(requestId)
+      .then(() => {
+        console.log('filter projectRequests');
+      })
+
+  }
+
   submitAcceptUser = e => {
     e.preventDefault();
     const { role } = e.target;
@@ -129,15 +141,15 @@ class DashBoardRoute extends React.Component {
             <h5 className='join-request-name'>From: {joinRequest.userName}</h5>
             <p>Message: {joinRequest.message}</p>
             <span className='join-request-buttons'>
-            <button
-              className='accept-button'
-              onClick={() => this.handleAcceptRequest(joinRequest.userId, joinRequest.projectId)}>
-              Accept
+              <button
+                className='accept-button'
+                onClick={() => this.handleAcceptRequest(joinRequest.userId, joinRequest.projectId)}>
+                Accept
               </button>
-            <button
-              className='reject-button'
-              onClick={() => this.handleRejectRequest(joinRequest.userId, joinRequest.projectId)}>
-              Reject
+              <button
+                className='reject-button'
+                onClick={() => this.handleRejectRequest(joinRequest.id)}>
+                Reject
               </button>
             </span>
           </div>)
