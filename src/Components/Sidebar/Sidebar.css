@@ -22,6 +22,10 @@
   /* margin-left: 5px; */
 }
 
+/* .project-list-item:last-child {
+  border-bottom: 2px solid #25272e;
+} */
+
 .inactive-project:hover {
   background-color: var(--seafoam);
 }
@@ -112,6 +116,21 @@
 
 .sidebar-header:hover {
   cursor: pointer;
+}
+
+.sidebar-collapse {
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
+  border: none;
+  /* background-color: var(--seafoam); */
+  background-color: rgb(13, 73, 185);
+
+}
+
+.sidebar-collapse:hover {
+  cursor: pointer;
+  background-color: var(--seafoam-active);
 }
 
 .middle-header {

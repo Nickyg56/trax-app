@@ -125,7 +125,7 @@ class Sidebar extends React.Component {
           onMouseDown={projectFormOpen ? null : (e => this.onMouseDown(e))}
         >
           <div className='chat-controller'>
-            <button onClick={this.toggleSidebarVisible}>^</button>
+            <button className='sidebar-collapse' onClick={this.toggleSidebarVisible}>^</button>
             <span
               className={(headerType === config.SIDEBAR_PROJECTS ? 'active ' : '') + 'sidebar-header'}
               onClick={headerType === config.SIDEBAR_PROJECTS ? () => null : () => this.changeHeaderType(config.SIDEBAR_PROJECTS)}>
